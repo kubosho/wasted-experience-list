@@ -14,7 +14,9 @@
         "update_snapshot": "jest --updateSnapshot",
         "typecheck": "tsc --project ."
     },
-    "dependencies": {},
+    "dependencies": {
+        "preact": "^10.5.9"
+    },
     "devDependencies": {
         "@babel/cli": "^7.12.10",
         "@babel/core": "^7.12.10",

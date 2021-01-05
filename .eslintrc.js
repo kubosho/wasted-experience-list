@@ -20,6 +20,9 @@ module.exports = {
                 extensions: ['.js', '.jsx', '.ts', '.tsx'],
             },
         },
+        react: {
+            pragma: 'h',
+        },
     },
     rules: {
         '@typescript-eslint/no-use-before-define': ['error', { functions: false, classes: true, variables: true }],
