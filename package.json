@@ -17,6 +17,7 @@
         "build-storybook": "build-storybook"
     },
     "dependencies": {
+        "dayjs": "^1.10.2",
         "preact": "^10.5.9"
     },
     "devDependencies": {
