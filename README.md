@@ -1,3 +1,1 @@
-# START:TYPE!!
-
-Boilerplate of development environment using TypeScript.
+# wasted-experience-list
