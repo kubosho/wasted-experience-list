@@ -8,7 +8,7 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
         'prettier/@typescript-eslint',
     ],
-    plugins: ['@typescript-eslint', 'react'],
+    plugins: ['@typescript-eslint', 'react', 'react-hooks'],
     parser: '@typescript-eslint/parser',
     parserOptions: {
         sourceType: 'module',
@@ -32,6 +32,13 @@ module.exports = {
                 allowExpressions: true,
                 allowTypedFunctionExpressions: true,
                 allowHigherOrderFunctions: true,
+            },
+        ],
+        'react-hooks/rules-of-hooks': 'error',
+        'react-hooks/exhaustive-deps': [
+            'warn',
+            {
+                additionalHooks: 'useRecoilCallback',
             },
         ],
     },
