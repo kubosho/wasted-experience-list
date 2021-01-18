@@ -26,7 +26,7 @@
         "@babel/plugin-transform-react-jsx": "^7.12.12",
         "@babel/preset-env": "^7.12.11",
         "@babel/preset-typescript": "^7.12.7",
-        "@storybook/addon-actions": "^6.1.11",
+        "@storybook/addon-actions": "^6.1.14",
         "@storybook/addon-essentials": "^6.1.11",
         "@storybook/addon-links": "^6.1.11",
         "@storybook/preact": "^6.1.11",
