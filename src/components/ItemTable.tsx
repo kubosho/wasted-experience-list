@@ -25,25 +25,29 @@ export const ItemTable = ({ itemValueMap, onBlurInputForm, onDeleteItem }: ItemT
                 <tr key={`${key}_${i}`}>
                     <td>
                         <input type="hidden" id={ItemTableFormName.Id} name={ItemTableFormName.Id} value={key} />
-                        <label htmlFor={ItemTableFormName.Name}>Name:</label>
-                        <input
-                            ref={itemNameRef}
-                            type="text"
-                            name={ItemTableFormName.Name}
-                            id={ItemTableFormName.Name}
-                            value={value.name}
-                            onBlur={(event) => onBlurInputForm(event, key)}
-                        />
+                        <label>
+                            Name:
+                            <input
+                                ref={itemNameRef}
+                                type="text"
+                                name={ItemTableFormName.Name}
+                                id={ItemTableFormName.Name}
+                                value={value.name}
+                                onBlur={(event) => onBlurInputForm(event, key)}
+                            />
+                        </label>
                     </td>
                     <td>
-                        <label htmlFor={ItemTableFormName.Url}>URL:</label>
-                        <input
-                            type="url"
-                            name={ItemTableFormName.Url}
-                            id={ItemTableFormName.Url}
-                            value={value.url}
-                            onBlur={(event) => onBlurInputForm(event, key)}
-                        />
+                        <label>
+                            URL:
+                            <input
+                                type="url"
+                                name={ItemTableFormName.Url}
+                                id={ItemTableFormName.Url}
+                                value={value.url}
+                                onBlur={(event) => onBlurInputForm(event, key)}
+                            />
+                        </label>
                     </td>
                     <td>{convertMsToTime(value.time)}</td>
                     <td>
