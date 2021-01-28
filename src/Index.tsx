@@ -1,4 +1,4 @@
-import { h } from 'preact';
+import { h, render } from 'preact';
 import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
 import { v4 as uuid } from 'uuid';
 import { ItemTable } from './components/ItemTable';
@@ -98,9 +98,9 @@ export const Index = (): JSX.Element => {
 
     return (
         <>
-            <div>
+            <p>
                 <output>{totalTime}</output>
-            </div>
+            </p>
             <h2>Wasted experience list</h2>
             {itemValueMap.size > 0 && (
                 <ItemTable itemValueMap={itemValueMap} onDeleteItem={deleteItem} onBlurInputForm={onBlurInputForm} />
@@ -109,3 +109,8 @@ export const Index = (): JSX.Element => {
         </>
     );
 };
+
+const rootElement = document.querySelector('#wasted-experience-list');
+if (rootElement !== null) {
+    render(<Index />, rootElement);
+}
