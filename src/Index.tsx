@@ -6,6 +6,11 @@ import { createItemValue, ItemValue } from './itemValue';
 import { calcTotalTime } from './time/totalTimeCalculator';
 import { convertMsToTime } from './time/millisecondsToTimeConverter';
 import { ItemTableFormName } from './components/itemTableFormName';
+import { createItemRepository, ItemRepository } from './itemRepository';
+
+interface Props {
+    repository: ItemRepository;
+}
 
 const ITEM_INITIAL_VALUE = {
     name: '',
@@ -13,15 +18,21 @@ const ITEM_INITIAL_VALUE = {
     time: 0,
 };
 
-export const Index = (): JSX.Element => {
-    const [itemValueMap, setItemValueMap] = useState<Map<string, ItemValue>>(new Map());
+const STORAGE_KEY = 'wasted_experience_list';
+
+export const Index = ({ repository }: Props): JSX.Element => {
+    const initialValue = repository.getMap<ItemValue>(STORAGE_KEY);
+    const [itemValueMap, setItemValueMap] = useState<Map<string, ItemValue>>(initialValue ?? new Map());
     const intervalId = useRef<number | null>(null);
 
     const addItem = useCallback((): void => {
         const id = uuid();
         itemValueMap.set(id, createItemValue({ id, ...ITEM_INITIAL_VALUE }));
-        setItemValueMap(new Map(itemValueMap));
-    }, [itemValueMap]);
+
+        const result = new Map(itemValueMap);
+        setItemValueMap(result);
+        repository.setMap(STORAGE_KEY, result);
+    }, [itemValueMap, repository]);
 
     const deleteItem = useCallback(
         (key: string): void => {
@@ -30,9 +41,12 @@ export const Index = (): JSX.Element => {
             }
 
             itemValueMap.delete(key);
-            setItemValueMap(new Map(itemValueMap));
+
+            const result = new Map(itemValueMap);
+            setItemValueMap(result);
+            repository.setMap(STORAGE_KEY, result);
         },
-        [itemValueMap],
+        [itemValueMap, repository],
     );
 
     const totalTime = useCallback(() => {
@@ -65,9 +79,11 @@ export const Index = (): JSX.Element => {
                 );
             }
 
-            setItemValueMap(new Map(itemValueMap));
+            const result = new Map(itemValueMap);
+            setItemValueMap(result);
+            repository.setMap(STORAGE_KEY, result);
         },
-        [itemValueMap],
+        [itemValueMap, repository],
     );
 
     const handleVisibilityChange = useCallback(() => {
@@ -81,14 +97,17 @@ export const Index = (): JSX.Element => {
         if (document.visibilityState === 'visible') {
             intervalId.current = window.setInterval(() => {
                 itemValueMap.set(itemValue.id, createItemValue({ ...itemValue, time: (itemValue.time += 1000) }));
-                setItemValueMap(new Map(itemValueMap));
+
+                const result = new Map(itemValueMap);
+                setItemValueMap(result);
+                repository.setMap(STORAGE_KEY, result);
             }, 1000);
         }
 
         if (document.visibilityState === 'hidden') {
             intervalId.current !== null && clearInterval(intervalId.current);
         }
-    }, [itemValueMap]);
+    }, [itemValueMap, repository]);
 
     useEffect(() => {
         document.addEventListener('visibilitychange', handleVisibilityChange);
@@ -112,5 +131,7 @@ export const Index = (): JSX.Element => {
 
 const rootElement = document.querySelector('#wasted-experience-list');
 if (rootElement !== null) {
-    render(<Index />, rootElement);
+    const storage = window.localStorage;
+    const repository = createItemRepository(storage);
+    render(<Index repository={repository} />, rootElement);
 }
