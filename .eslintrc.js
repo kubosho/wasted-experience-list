@@ -1,11 +1,13 @@
 module.exports = {
     root: true,
-    env: { browser: true, node: true, es6: true, jest: true },
+    env: { browser: true, node: true, es6: true, jest: true, webextensions: true },
     extends: [
         'eslint:recommended',
+        'plugin:@typescript-eslint/recommended',
         'plugin:prettier/recommended',
         'plugin:react/recommended',
-        'plugin:@typescript-eslint/recommended',
+        'plugin:import/errors',
+        'plugin:import/warnings',
         'prettier/@typescript-eslint',
     ],
     plugins: ['@typescript-eslint', 'react', 'react-hooks'],
@@ -39,6 +41,13 @@ module.exports = {
             'warn',
             {
                 additionalHooks: 'useRecoilCallback',
+            },
+        ],
+        'import/order': [
+            'error',
+            {
+                groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+                'newlines-between': 'always',
             },
         ],
     },
