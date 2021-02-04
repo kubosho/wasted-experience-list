@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
+
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 const ASSETS_DIR = 'assets';
@@ -7,7 +8,10 @@ const PUBLIC_DIR = 'public';
 const OUT_DIR = 'bundle';
 
 module.exports = {
-    entry: path.join(__dirname, 'lib', 'Index.js'),
+    entry: {
+        background: path.join(__dirname, 'lib', 'background.js'),
+        main: path.join(__dirname, 'lib', 'Index.js'),
+    },
     output: {
         path: path.join(__dirname, OUT_DIR),
         filename: '[name].bundle.js',
