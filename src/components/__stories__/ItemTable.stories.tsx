@@ -1,6 +1,6 @@
 import { h } from 'preact';
 
-import { ItemTable, ItemTableProps } from './ItemTable';
+import { ItemTable, ItemTableProps } from '../ItemTable';
 
 export default {
     title: 'Components',
