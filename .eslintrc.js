@@ -24,6 +24,7 @@ module.exports = {
         },
         react: {
             pragma: 'h',
+            version: 'detect',
         },
     },
     rules: {
