@@ -1,7 +1,7 @@
 import { h } from 'preact';
 
 import { ContentScripts } from '../ContentScripts';
-import { createItemRepository } from '../../itemRepository';
+import { createItemRepository } from '../../wasted_experience_item/itemRepository';
 import { createStorageWrapper } from '../../storage';
 
 export default {

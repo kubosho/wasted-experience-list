@@ -1,4 +1,4 @@
-import { milliseconds } from './time/millisecondsType';
+import { milliseconds } from '../time/millisecondsType';
 
 export interface ItemValue {
     id: string;

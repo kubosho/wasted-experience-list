@@ -3,11 +3,11 @@ import { useCallback, useState } from 'preact/hooks';
 import { v4 as uuid } from 'uuid';
 
 import { ItemTable } from '../components/ItemTable';
-import { createItemValue, ItemValue } from '../itemValue';
+import { createItemValue, ItemValue } from '../wasted_experience_item/itemValue';
 import { calcTotalTime } from '../time/totalTimeCalculator';
 import { convertMsToTime } from '../time/millisecondsToTimeConverter';
 import { ItemTableFormName } from '../components/itemTableFormName';
-import { createItemRepository, ItemRepository } from '../itemRepository';
+import { createItemRepository, ItemRepository } from '../wasted_experience_item/itemRepository';
 import { createStorageWrapper, STORAGE_KEY } from '../storage';
 
 interface Props {

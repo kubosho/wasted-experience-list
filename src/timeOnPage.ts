@@ -1,8 +1,8 @@
 import { DOMStorageLike } from './domStorageLike';
 import { SECONDS } from './time/time';
 import { STORAGE_KEY, createStorageWrapper } from './storage';
-import { ItemRepository, createItemRepository } from './itemRepository';
-import { ItemValue, createItemValue } from './itemValue';
+import { ItemRepository, createItemRepository } from './wasted_experience_item/itemRepository';
+import { ItemValue, createItemValue } from './wasted_experience_item/itemValue';
 import { getTabData } from './tabData';
 
 export class TimeOnPage {

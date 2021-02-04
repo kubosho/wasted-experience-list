@@ -1,4 +1,4 @@
-import { DOMStorageLike } from './domStorageLike';
+import { DOMStorageLike } from '../domStorageLike';
 
 export interface ItemRepository {
     get<T>(key: string): T | null;

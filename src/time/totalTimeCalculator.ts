@@ -1,4 +1,4 @@
-import { ItemValue } from '../itemValue';
+import { ItemValue } from '../wasted_experience_item/itemValue';
 
 import { milliseconds } from './millisecondsType';
 
