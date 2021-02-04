@@ -1,12 +1,14 @@
 import { h, render } from 'preact';
-import { useCallback, useEffect, useRef, useState } from 'preact/hooks';
+import { useCallback, useState } from 'preact/hooks';
 import { v4 as uuid } from 'uuid';
+
 import { ItemTable } from './components/ItemTable';
 import { createItemValue, ItemValue } from './itemValue';
 import { calcTotalTime } from './time/totalTimeCalculator';
 import { convertMsToTime } from './time/millisecondsToTimeConverter';
 import { ItemTableFormName } from './components/itemTableFormName';
 import { createItemRepository, ItemRepository } from './itemRepository';
+import { createStorageWrapper, STORAGE_KEY } from './storage';
 
 interface Props {
     repository: ItemRepository;
@@ -18,33 +20,22 @@ const ITEM_INITIAL_VALUE = {
     time: 0,
 };
 
-const STORAGE_KEY = 'wasted_experience_list';
-
 export const Index = ({ repository }: Props): JSX.Element => {
     const initialValue = repository.getMap<ItemValue>(STORAGE_KEY);
     const [itemValueMap, setItemValueMap] = useState<Map<string, ItemValue>>(initialValue ?? new Map());
-    const intervalId = useRef<number | null>(null);
 
     const addItem = useCallback((): void => {
         const id = uuid();
         itemValueMap.set(id, createItemValue({ id, ...ITEM_INITIAL_VALUE }));
 
-        const result = new Map(itemValueMap);
-        setItemValueMap(result);
-        repository.setMap(STORAGE_KEY, result);
+        saveItemValueMap(repository, itemValueMap, setItemValueMap);
     }, [itemValueMap, repository]);
 
     const deleteItem = useCallback(
         (key: string): void => {
-            if (intervalId.current !== null) {
-                clearInterval(intervalId.current);
-            }
-
             itemValueMap.delete(key);
 
-            const result = new Map(itemValueMap);
-            setItemValueMap(result);
-            repository.setMap(STORAGE_KEY, result);
+            saveItemValueMap(repository, itemValueMap, setItemValueMap);
         },
         [itemValueMap, repository],
     );
@@ -79,41 +70,10 @@ export const Index = ({ repository }: Props): JSX.Element => {
                 );
             }
 
-            const result = new Map(itemValueMap);
-            setItemValueMap(result);
-            repository.setMap(STORAGE_KEY, result);
+            saveItemValueMap(repository, itemValueMap, setItemValueMap);
         },
         [itemValueMap, repository],
     );
-
-    const handleVisibilityChange = useCallback(() => {
-        const pageUrl = location.href;
-        const itemValue = Array.from(itemValueMap.values()).find((itemValue) => itemValue.url === pageUrl);
-
-        if (itemValue === undefined) {
-            return;
-        }
-
-        if (document.visibilityState === 'visible') {
-            intervalId.current = window.setInterval(() => {
-                itemValueMap.set(itemValue.id, createItemValue({ ...itemValue, time: (itemValue.time += 1000) }));
-
-                const result = new Map(itemValueMap);
-                setItemValueMap(result);
-                repository.setMap(STORAGE_KEY, result);
-            }, 1000);
-        }
-
-        if (document.visibilityState === 'hidden') {
-            intervalId.current !== null && clearInterval(intervalId.current);
-        }
-    }, [itemValueMap, repository]);
-
-    useEffect(() => {
-        document.addEventListener('visibilitychange', handleVisibilityChange);
-
-        return () => document.removeEventListener('visibilitychange', handleVisibilityChange);
-    }, [handleVisibilityChange]);
 
     return (
         <>
@@ -129,9 +89,19 @@ export const Index = ({ repository }: Props): JSX.Element => {
     );
 };
 
+function saveItemValueMap(
+    repository: ItemRepository,
+    itemValueMap: Map<string, ItemValue>,
+    callback: (itemValueMap: Map<string, ItemValue>) => void,
+): void {
+    const valueMap = new Map(itemValueMap);
+    callback(valueMap);
+    repository.setMap(STORAGE_KEY, valueMap);
+}
+
 const rootElement = document.querySelector('#wasted-experience-list');
 if (rootElement !== null) {
-    const storage = window.localStorage;
+    const storage = createStorageWrapper();
     const repository = createItemRepository(storage);
     render(<Index repository={repository} />, rootElement);
 }
