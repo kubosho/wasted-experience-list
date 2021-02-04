@@ -2,13 +2,13 @@ import { h, render } from 'preact';
 import { useCallback, useState } from 'preact/hooks';
 import { v4 as uuid } from 'uuid';
 
-import { ItemTable } from './components/ItemTable';
-import { createItemValue, ItemValue } from './itemValue';
-import { calcTotalTime } from './time/totalTimeCalculator';
-import { convertMsToTime } from './time/millisecondsToTimeConverter';
-import { ItemTableFormName } from './components/itemTableFormName';
-import { createItemRepository, ItemRepository } from './itemRepository';
-import { createStorageWrapper, STORAGE_KEY } from './storage';
+import { ItemTable } from '../components/ItemTable';
+import { createItemValue, ItemValue } from '../itemValue';
+import { calcTotalTime } from '../time/totalTimeCalculator';
+import { convertMsToTime } from '../time/millisecondsToTimeConverter';
+import { ItemTableFormName } from '../components/itemTableFormName';
+import { createItemRepository, ItemRepository } from '../itemRepository';
+import { createStorageWrapper, STORAGE_KEY } from '../storage';
 
 interface Props {
     repository: ItemRepository;
@@ -20,7 +20,7 @@ const ITEM_INITIAL_VALUE = {
     time: 0,
 };
 
-export const Index = ({ repository }: Props): JSX.Element => {
+export const ContentScripts = ({ repository }: Props): JSX.Element => {
     const initialValue = repository.getMap<ItemValue>(STORAGE_KEY);
     const [itemValueMap, setItemValueMap] = useState<Map<string, ItemValue>>(initialValue ?? new Map());
 
@@ -103,5 +103,5 @@ const rootElement = document.querySelector('#wasted-experience-list');
 if (rootElement !== null) {
     const storage = createStorageWrapper();
     const repository = createItemRepository(storage);
-    render(<Index repository={repository} />, rootElement);
+    render(<ContentScripts repository={repository} />, rootElement);
 }

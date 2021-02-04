@@ -1,4 +1,4 @@
-import { createTimeOnPage } from './timeOnPage';
+import { createTimeOnPage } from '../timeOnPage';
 
 function main(): void {
     const timeOnPage = createTimeOnPage();
