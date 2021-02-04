@@ -2,7 +2,7 @@ import { h } from 'preact';
 
 import { ContentScripts } from '../ContentScripts';
 import { createItemRepository } from '../../wasted_experience_item/itemRepository';
-import { createStorageWrapper } from '../../storage';
+import { createStorageWrapper } from '../../storage/storage';
 
 export default {
     title: 'ContentScripts',

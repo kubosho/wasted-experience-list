@@ -8,7 +8,7 @@ import { calcTotalTime } from '../time/totalTimeCalculator';
 import { convertMsToTime } from '../time/millisecondsToTimeConverter';
 import { ItemTableFormName } from '../components/itemTableFormName';
 import { createItemRepository, ItemRepository } from '../wasted_experience_item/itemRepository';
-import { createStorageWrapper, STORAGE_KEY } from '../storage';
+import { createStorageWrapper, STORAGE_KEY } from '../storage/storage';
 
 interface Props {
     repository: ItemRepository;

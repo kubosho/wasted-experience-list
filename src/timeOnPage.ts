@@ -1,6 +1,6 @@
-import { DOMStorageLike } from './domStorageLike';
+import { DOMStorageLike } from './storage/domStorageLike';
 import { SECONDS } from './time/time';
-import { STORAGE_KEY, createStorageWrapper } from './storage';
+import { STORAGE_KEY, createStorageWrapper } from './storage/storage';
 import { ItemRepository, createItemRepository } from './wasted_experience_item/itemRepository';
 import { ItemValue, createItemValue } from './wasted_experience_item/itemValue';
 import { getTabData } from './tabData';
