@@ -1,5 +1,5 @@
 import { DOMStorageLike } from './domStorageLike';
-import { SECONDS } from './time';
+import { SECONDS } from './time/time';
 import { STORAGE_KEY, createStorageWrapper } from './storage';
 import { ItemRepository, createItemRepository } from './itemRepository';
 import { ItemValue, createItemValue } from './itemValue';
