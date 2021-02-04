@@ -1,7 +1,9 @@
 import { createRef, h } from 'preact';
 import { useEffect, useMemo } from 'preact/hooks';
+
 import { ItemValue } from '../itemValue';
 import { convertMsToTime } from '../time/millisecondsToTimeConverter';
+
 import { ItemTableFormName } from './itemTableFormName';
 
 export interface ItemTableProps {

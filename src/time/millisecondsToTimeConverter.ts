@@ -1,5 +1,6 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
+
 import { milliseconds } from './millisecondsType';
 
 const DAY_TO_MILLISECONDS = 60 * 60 * 24 * 1000;

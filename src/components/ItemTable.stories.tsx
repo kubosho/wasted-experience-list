@@ -1,4 +1,5 @@
 import { h } from 'preact';
+
 import { ItemTable, ItemTableProps } from './ItemTable';
 
 export default {
