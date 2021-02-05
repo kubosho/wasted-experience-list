@@ -77,10 +77,10 @@ export const ContentScripts = ({ repository }: Props): JSX.Element => {
 
     return (
         <>
-            <p>
-                <output>{totalTime}</output>
-            </p>
             <h2>Wasted experience list</h2>
+            <p>
+                <output>{totalTime()}</output>
+            </p>
             {itemValueMap.size > 0 && (
                 <ItemTable itemValueMap={itemValueMap} onDeleteItem={deleteItem} onBlurInputForm={onBlurInputForm} />
             )}
