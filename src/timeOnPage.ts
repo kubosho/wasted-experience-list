@@ -44,8 +44,8 @@ export class TimeOnPage {
 
         this._itemValueMap.set(itemValue.id, createItemValue({ ...itemValue, time: (itemValue.time += SECONDS) }));
 
-        const newMap = new Map(this._itemValueMap);
-        this._repository.setMap(STORAGE_KEY, newMap);
+        this._itemValueMap = new Map(this._itemValueMap);
+        this._repository.setMap(STORAGE_KEY, this._itemValueMap);
     }
 }
 
