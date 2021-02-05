@@ -10,7 +10,7 @@ const OUT_DIR = 'bundle';
 module.exports = {
     entry: {
         background: path.join(__dirname, 'lib', 'extension_specific', 'background.js'),
-        contenteScripts: path.join(__dirname, 'lib', 'extension_specific', 'ContentScripts.js'),
+        contentScripts: path.join(__dirname, 'lib', 'extension_specific', 'ContentScripts.js'),
     },
     output: {
         path: path.join(__dirname, OUT_DIR),
