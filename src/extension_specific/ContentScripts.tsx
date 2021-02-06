@@ -1,5 +1,5 @@
 import { h, render } from 'preact';
-import { useCallback, useState } from 'preact/hooks';
+import { useCallback, useEffect, useState } from 'preact/hooks';
 import { v4 as uuid } from 'uuid';
 
 import { ItemTable } from '../components/ItemTable';
@@ -9,6 +9,7 @@ import { convertMsToTime } from '../time/millisecondsToTimeConverter';
 import { ItemTableFormName } from '../components/itemTableFormName';
 import { createItemRepository, ItemRepository } from '../wasted_experience_item/itemRepository';
 import { createStorageWrapper, STORAGE_KEY } from '../storage/storage';
+import { SECONDS } from '../time/time';
 
 interface Props {
     repository: ItemRepository;
@@ -21,8 +22,16 @@ const ITEM_INITIAL_VALUE = {
 };
 
 export const ContentScripts = ({ repository }: Props): JSX.Element => {
-    const initialValue = repository.getMap<ItemValue>(STORAGE_KEY);
-    const [itemValueMap, setItemValueMap] = useState<Map<string, ItemValue>>(initialValue ?? new Map());
+    const initialValue = repository.getMap<ItemValue>(STORAGE_KEY) ?? new Map();
+    const [itemValueMap, setItemValueMap] = useState<Map<string, ItemValue>>(initialValue);
+
+    useEffect(() => {
+        const intervalId = setInterval(() => {
+            setItemValueMap(repository.getMap<ItemValue>(STORAGE_KEY) ?? itemValueMap);
+        }, SECONDS);
+
+        return () => clearInterval(intervalId);
+    }, [itemValueMap, repository]);
 
     const addItem = useCallback((): void => {
         const id = uuid();
