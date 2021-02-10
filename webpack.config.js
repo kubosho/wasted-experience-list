@@ -2,6 +2,7 @@
 const path = require('path');
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const ASSETS_DIR = 'assets';
 const PUBLIC_DIR = 'public';
@@ -19,6 +20,10 @@ module.exports = {
     target: 'web',
     module: {
         rules: [
+            {
+                test: /\.css$/,
+                use: [MiniCssExtractPlugin.loader, 'css-loader'],
+            },
             {
                 test: /\.js$/,
                 use: { loader: 'babel-loader' },
@@ -42,6 +47,7 @@ module.exports = {
                 },
             ],
         }),
+        new MiniCssExtractPlugin(),
     ],
     mode: 'production',
 };
