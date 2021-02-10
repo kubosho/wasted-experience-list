@@ -19,6 +19,7 @@
     "dependencies": {
         "dayjs": "^1.10.4",
         "preact": "^10.5.12",
+        "recoil": "^0.1.2",
         "uuid": "^8.3.2"
     },
     "devDependencies": {
