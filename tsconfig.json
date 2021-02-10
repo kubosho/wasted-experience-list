@@ -11,7 +11,11 @@
         "resolveJsonModule": true,
         "isolatedModules": true,
         "jsx": "preserve",
-        "jsxFactory": "h"
+        "jsxFactory": "h",
+        "typeRoots": [
+            "node_modules/@types",
+            "node_modules/web-ext-types"
+        ],
     },
     "exclude": [
         "node_modules"
