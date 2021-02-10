@@ -4,7 +4,6 @@ const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const ASSETS_DIR = 'assets';
 const PUBLIC_DIR = 'public';
 const OUT_DIR = 'bundle';
 
@@ -36,10 +35,6 @@ module.exports = {
                 {
                     from: path.join(__dirname, 'manifest.json'),
                     to: path.join(__dirname, OUT_DIR),
-                },
-                {
-                    from: path.join(__dirname, PUBLIC_DIR, ASSETS_DIR, 'icon.svg'),
-                    to: path.join(__dirname, OUT_DIR, ASSETS_DIR),
                 },
                 {
                     from: path.join(__dirname, PUBLIC_DIR, 'index.html'),
