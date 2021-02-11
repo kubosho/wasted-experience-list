@@ -44,5 +44,11 @@ module.exports = {
         }),
         new MiniCssExtractPlugin(),
     ],
+    resolve: {
+        alias: {
+            react: 'preact/compat',
+            'react-dom': 'preact/compat',
+        },
+    },
     mode: 'production',
 };
