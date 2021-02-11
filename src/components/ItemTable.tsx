@@ -1,5 +1,5 @@
 import { createRef, h } from 'preact';
-import { useEffect, useMemo } from 'preact/hooks';
+import { useEffect } from 'preact/hooks';
 
 import { ItemValue } from '../wasted_experience_item/itemValue';
 import { convertMsToTime } from '../time/millisecondsToTimeConverter';
@@ -7,13 +7,12 @@ import { convertMsToTime } from '../time/millisecondsToTimeConverter';
 import { ItemTableFormName } from './itemTableFormName';
 
 export interface ItemTableProps {
-    itemValueMap: Map<string, ItemValue>;
-    onBlurInputForm: (event: Event, id: string) => void;
-    onDeleteItem: (key: string) => void;
+    itemValueList: ItemValue[];
+    onBlurInputForm: (event: Event, index: number) => void;
+    onDeleteItem: (index: number) => void;
 }
 
-export const ItemTable = ({ itemValueMap, onBlurInputForm, onDeleteItem }: ItemTableProps): JSX.Element => {
-    const itemValueMapEntries = useMemo(() => Array.from(itemValueMap.entries()), [itemValueMap]);
+export const ItemTable = ({ itemValueList, onBlurInputForm, onDeleteItem }: ItemTableProps): JSX.Element => {
     const itemNameRef = createRef<HTMLInputElement>();
 
     useEffect(() => {
