@@ -10,5 +10,5 @@
         "default_title": "Wasted experience list",
         "default_popup": "./index.html"
     },
-    "permissions": ["tabs"]
+    "permissions": ["storage", "tabs"]
 }
