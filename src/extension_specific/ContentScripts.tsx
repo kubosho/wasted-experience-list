@@ -1,19 +1,15 @@
 import { h, render } from 'preact';
-import { useCallback, useEffect, useState } from 'preact/hooks';
+import { useEffect } from 'preact/hooks';
+import { RecoilRoot, useRecoilState, useRecoilValue } from 'recoil';
 import { v4 as uuid } from 'uuid';
 
-import { ItemTable } from '../components/ItemTable';
-import { createItemValue, ItemValue } from '../wasted_experience_item/itemValue';
-import { calcTotalTime } from '../time/totalTimeCalculator';
-import { convertMsToTime } from '../time/millisecondsToTimeConverter';
 import { ItemTableFormName } from '../components/itemTableFormName';
-import { createItemRepository, ItemRepository } from '../wasted_experience_item/itemRepository';
-import { createStorageWrapper, STORAGE_KEY } from '../storage/storage';
-import { SECONDS } from '../time/time';
-
-interface Props {
-    repository: ItemRepository;
-}
+import { itemValueListState } from '../wasted_experience_item/itemValueListState';
+import { calculatedTotalTimeState } from '../time/calculatedTotalTimeState';
+import { createItemValue, ItemValue } from '../wasted_experience_item/itemValue';
+import { IndexPage } from '../pages/Index';
+import { STORAGE_KEY } from '../storage/storageWrapper';
+import { getSyncStorage } from '../storage/syncStorage';
 
 const ITEM_INITIAL_VALUE = {
     name: '',
@@ -21,96 +17,78 @@ const ITEM_INITIAL_VALUE = {
     time: 0,
 };
 
-export const ContentScripts = ({ repository }: Props): JSX.Element => {
-    const initialValue = repository.getMap<ItemValue>(STORAGE_KEY) ?? new Map();
-    const [itemValueMap, setItemValueMap] = useState<Map<string, ItemValue>>(initialValue);
+const storage = getSyncStorage();
+
+export const ContentScripts = (): JSX.Element => {
+    const [itemValueList, setItemValueList] = useRecoilState(itemValueListState);
+    const totalTime = useRecoilValue(calculatedTotalTimeState);
+
+    const onClickAddItem = (): void => {
+        const id = uuid();
+        setItemValueList((itemValueList) => [...itemValueList, { id, ...ITEM_INITIAL_VALUE }]);
+    };
+
+    const onDeleteItem = (index: number): void => {
+        setItemValueList((itemValueList) => {
+            const newList = [...itemValueList];
+            newList.splice(index, 1);
+            return newList;
+        });
+    };
+
+    const onBlurInputForm = (event: Event, index: number): void => {
+        const target = event.target as HTMLInputElement;
+
+        switch (target.id) {
+            case ItemTableFormName.Name:
+                return setItemValueList(
+                    spliceItemValueList(ItemTableFormName.Name, target.value, index, itemValueList),
+                );
+            case ItemTableFormName.Url:
+                return setItemValueList(spliceItemValueList(ItemTableFormName.Url, target.value, index, itemValueList));
+            default:
+                break;
+        }
+    };
 
     useEffect(() => {
-        const intervalId = setInterval(() => {
-            setItemValueMap(repository.getMap<ItemValue>(STORAGE_KEY) ?? itemValueMap);
-        }, SECONDS);
+        storage?.get<ItemValue[]>(STORAGE_KEY).then((value) => {
+            setItemValueList(value);
+        });
+    }, [setItemValueList]);
 
-        return () => clearInterval(intervalId);
-    }, [itemValueMap, repository]);
-
-    const addItem = useCallback((): void => {
-        const id = uuid();
-        itemValueMap.set(id, createItemValue({ id, ...ITEM_INITIAL_VALUE }));
-
-        saveItemValueMap(repository, itemValueMap, setItemValueMap);
-    }, [itemValueMap, repository]);
-
-    const deleteItem = useCallback(
-        (key: string): void => {
-            itemValueMap.delete(key);
-
-            saveItemValueMap(repository, itemValueMap, setItemValueMap);
-        },
-        [itemValueMap, repository],
-    );
-
-    const totalTime = useCallback(() => {
-        const totalTime = calcTotalTime(Array.from(itemValueMap.values()));
-        return convertMsToTime(totalTime);
-    }, [itemValueMap]);
-
-    const onBlurInputForm = useCallback(
-        (event: Event, id: string): void => {
-            const target = event.target as HTMLInputElement;
-            const prevValue = itemValueMap.get(id) ?? createItemValue({ id, ...ITEM_INITIAL_VALUE });
-
-            if (target.id === ItemTableFormName.Name) {
-                itemValueMap.set(
-                    id,
-                    createItemValue({
-                        ...prevValue,
-                        name: target.value,
-                    }),
-                );
-            }
-
-            if (target.id === ItemTableFormName.Url) {
-                itemValueMap.set(
-                    id,
-                    createItemValue({
-                        ...prevValue,
-                        url: target.value,
-                    }),
-                );
-            }
-
-            saveItemValueMap(repository, itemValueMap, setItemValueMap);
-        },
-        [itemValueMap, repository],
-    );
+    useEffect(() => {
+        storage?.set(STORAGE_KEY, itemValueList);
+    }, [itemValueList]);
 
     return (
-        <>
-            <h2>Wasted experience list</h2>
-            <p>
-                <output>{totalTime()}</output>
-            </p>
-            {itemValueMap.size > 0 && (
-                <ItemTable itemValueMap={itemValueMap} onDeleteItem={deleteItem} onBlurInputForm={onBlurInputForm} />
-            )}
-            <button onClick={addItem}>+</button>
-        </>
+        <IndexPage
+            totalTime={totalTime}
+            itemValueList={itemValueList}
+            onDeleteItem={onDeleteItem}
+            onBlurInputForm={onBlurInputForm}
+            onClickAddItem={onClickAddItem}
+        />
     );
 };
 
-function saveItemValueMap(
-    repository: ItemRepository,
-    itemValueMap: Map<string, ItemValue>,
-    callback: (itemValueMap: Map<string, ItemValue>) => void,
-): void {
-    const valueMap = new Map(itemValueMap);
-    callback(valueMap);
-    repository.setMap(STORAGE_KEY, valueMap);
+function spliceItemValueList(key: string, value: string, index: number, baseItemValueList: ItemValue[]): ItemValue[] {
+    const itemValueList = [...baseItemValueList];
+    const prevItemValue = itemValueList[index];
+    const itemValue = createItemValue({
+        ...prevItemValue,
+        [key]: value,
+    });
+    itemValueList.splice(index, 1, itemValue);
+    return itemValueList;
 }
 
 const rootElement = document.querySelector('#wasted-experience-list');
 if (rootElement !== null) {
-    const storage = createStorageWrapper();
-    const repository = createItemRepository(storage);
-    render(<ContentScripts repository={repository} />, rootElement);
+    render(
+        <RecoilRoot>
+            <ContentScripts />
+        </RecoilRoot>,
+        rootElement,
+    );
 }
