@@ -1,7 +1,7 @@
 import { SECONDS } from '../time/time';
 import { StorageWrapper, STORAGE_KEY } from '../storage/storageWrapper';
 import { createItemValue, ItemValue } from '../wasted_experience_item/itemValue';
-import { getTabData } from '../tabData';
+import { getTabData } from '../tab/tabData';
 import { getSyncStorage } from '../storage/syncStorage';
 
 class TimeTrackerOfSpentOnPage {
