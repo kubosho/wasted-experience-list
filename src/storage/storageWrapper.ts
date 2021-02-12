@@ -4,7 +4,7 @@ export const STORAGE_KEY = 'wasted_experience_list';
 
 export interface StorageWrapper {
     get: <T>(key: string) => Promise<T>;
-    set: <T>(key: string, value: T) => Promise<void>;
+    set: <T>(key: string, value: T) => Promise<{ [key: string]: T }>;
     remove: (key: string) => Promise<void>;
 }
 
@@ -19,8 +19,11 @@ class StorageWrapperImpl {
         return new Promise((resolve) => this._storage.get<T>((items) => resolve(items[key])));
     }
 
-    set<T>(key: string, value: T): Promise<void> {
-        return new Promise((resolve) => this._storage.set({ [key]: value }, resolve));
+    set<T>(key: string, value: T): Promise<{ [key: string]: T }> {
+        return new Promise((resolve) => {
+            const obj = { [key]: value };
+            this._storage.set(obj, () => resolve(obj));
+        });
     }
 
     remove(key: string | string[]): Promise<void> {
