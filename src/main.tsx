@@ -33,20 +33,8 @@ export const Main = (): JSX.Element => {
         storage?.set(STORAGE_KEY, itemValueList);
     }, [itemValueList]);
 
-    const onClickAddItem = (): void => {
-        const id = uuid();
-        const newList = [...itemValueList, { id, ...ITEM_INITIAL_VALUE }];
-        setItemValueList(newList);
-    };
-
-    const onDeleteItem = (index: number): void => {
-        const newList = itemValueList.filter((_value, i) => index !== i);
-        setItemValueList(newList);
-    };
-
-    const onBlurInputForm = (event: Event, index: number): void => {
+    const saveInputText = (event: Event, index: number): void => {
         const target = event.target as HTMLInputElement;
-
         switch (target.id) {
             case ItemTableFormName.Name:
                 setItemValueList(spliceItemValueList(ItemTableFormName.Name, target.value, index, itemValueList));
@@ -58,6 +46,19 @@ export const Main = (): JSX.Element => {
                 break;
         }
     };
+
+    const onClickAddItem = (): void => {
+        const id = uuid();
+        const newList = [...itemValueList, { id, ...ITEM_INITIAL_VALUE }];
+        setItemValueList(newList);
+    };
+
+    const onDeleteItem = (index: number): void => {
+        const newList = itemValueList.filter((_value, i) => index !== i);
+        setItemValueList(newList);
+    };
+
+    const onBlurInputForm = (event: Event, index: number): void => saveInputText(event, index);
 
     return (
         <IndexPage
