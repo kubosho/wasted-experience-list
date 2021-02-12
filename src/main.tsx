@@ -19,7 +19,7 @@ const ITEM_INITIAL_VALUE = {
 
 const storage = getSyncStorage();
 
-export const ContentScripts = (): JSX.Element => {
+export const Main = (): JSX.Element => {
     const [itemValueList, setItemValueList] = useRecoilState(itemValueListState);
     const totalTime = useRecoilValue(calculatedTotalTimeState);
 
@@ -87,7 +87,7 @@ const rootElement = document.querySelector('#wasted-experience-list');
 if (rootElement !== null) {
     render(
         <RecoilRoot>
-            <ContentScripts />
+            <Main />
         </RecoilRoot>,
         rootElement,
     );
