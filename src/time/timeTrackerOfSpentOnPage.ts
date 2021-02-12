@@ -40,7 +40,10 @@ class TimeTrackerOfSpentOnPage {
         const value = itemValueList[index];
 
         itemValueList[index] = createItemValue({ ...value, time: (value.time += SECONDS) });
-        this._storage.set(STORAGE_KEY, itemValueList);
+
+        setTimeout(() => {
+            this._storage.set(STORAGE_KEY, itemValueList);
+        });
     }
 }
 
