@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 const path = require('path');
 
+const { EnvironmentPlugin } = require('webpack');
+const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
@@ -30,6 +32,8 @@ module.exports = {
         ],
     },
     plugins: [
+        new EnvironmentPlugin({ BUNDLE_ANALYZE: false, NODE_ENV: 'production' }),
+        ...(process.env.BUNDLE_ANALYZE === 'true' ? [new BundleAnalyzerPlugin()] : []),
         new CopyWebpackPlugin({
             patterns: [
                 {
@@ -50,5 +54,5 @@ module.exports = {
             'react-dom': 'preact/compat',
         },
     },
-    mode: 'production',
+    mode: process.env.NODE_ENV,
 };
