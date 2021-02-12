@@ -3,13 +3,13 @@ import { useEffect } from 'preact/hooks';
 import { RecoilRoot, useRecoilState, useRecoilValue } from 'recoil';
 import { v4 as uuid } from 'uuid';
 
-import { ItemTableFormName } from '../components/itemTableFormName';
-import { itemValueListState } from '../wasted_experience_item/itemValueListState';
-import { calculatedTotalTimeState } from '../time/calculatedTotalTimeState';
-import { createItemValue, ItemValue } from '../wasted_experience_item/itemValue';
-import { IndexPage } from '../pages/Index';
-import { STORAGE_KEY } from '../storage/storageWrapper';
-import { getSyncStorage } from '../storage/syncStorage';
+import { ItemTableFormName } from './components/itemTableFormName';
+import { itemValueListState } from './wasted_experience_item/itemValueListState';
+import { calculatedTotalTimeState } from './time/calculatedTotalTimeState';
+import { createItemValue, ItemValue } from './wasted_experience_item/itemValue';
+import { IndexPage } from './pages/Index';
+import { STORAGE_KEY } from './storage/storageWrapper';
+import { getSyncStorage } from './storage/syncStorage';
 
 const ITEM_INITIAL_VALUE = {
     name: '',

@@ -1,5 +1,5 @@
-import { TabChangeInfoStatus } from '../tab/tabChangeInfo';
-import { createTimeTrackerOfSpentOnPage } from '../time/timeTrackerOfSpentOnPage';
+import { TabChangeInfoStatus } from './tab/tabChangeInfo';
+import { createTimeTrackerOfSpentOnPage } from './time/timeTrackerOfSpentOnPage';
 
 function main(): void {
     const timeTrackerOfSpentOnPage = createTimeTrackerOfSpentOnPage();
