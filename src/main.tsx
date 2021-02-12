@@ -73,11 +73,12 @@ export const Main = (): JSX.Element => {
 function spliceItemValueList(key: string, value: string, index: number, baseItemValueList: ItemValue[]): ItemValue[] {
     const itemValueList = [...baseItemValueList];
     const prevItemValue = itemValueList[index];
-    const itemValue = createItemValue({
+
+    itemValueList[index] = createItemValue({
         ...prevItemValue,
         [key]: value,
     });
-    itemValueList.splice(index, 1, itemValue);
+
     return itemValueList;
 }
 
