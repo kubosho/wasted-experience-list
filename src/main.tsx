@@ -23,34 +23,6 @@ export const Main = (): JSX.Element => {
     const [itemValueList, setItemValueList] = useRecoilState(itemValueListState);
     const totalTime = useRecoilValue(calculatedTotalTimeState);
 
-    const onClickAddItem = (): void => {
-        const id = uuid();
-        setItemValueList((itemValueList) => [...itemValueList, { id, ...ITEM_INITIAL_VALUE }]);
-    };
-
-    const onDeleteItem = (index: number): void => {
-        setItemValueList((itemValueList) => {
-            const newList = [...itemValueList];
-            newList.splice(index, 1);
-            return newList;
-        });
-    };
-
-    const onBlurInputForm = (event: Event, index: number): void => {
-        const target = event.target as HTMLInputElement;
-
-        switch (target.id) {
-            case ItemTableFormName.Name:
-                return setItemValueList(
-                    spliceItemValueList(ItemTableFormName.Name, target.value, index, itemValueList),
-                );
-            case ItemTableFormName.Url:
-                return setItemValueList(spliceItemValueList(ItemTableFormName.Url, target.value, index, itemValueList));
-            default:
-                break;
-        }
-    };
-
     useEffect(() => {
         storage?.get<ItemValue[]>(STORAGE_KEY).then((value) => {
             setItemValueList(value);
@@ -60,6 +32,32 @@ export const Main = (): JSX.Element => {
     useEffect(() => {
         storage?.set(STORAGE_KEY, itemValueList);
     }, [itemValueList]);
+
+    const onClickAddItem = (): void => {
+        const id = uuid();
+        const newList = [...itemValueList, { id, ...ITEM_INITIAL_VALUE }];
+        setItemValueList(newList);
+    };
+
+    const onDeleteItem = (index: number): void => {
+        const newList = itemValueList.filter((_value, i) => index !== i);
+        setItemValueList(newList);
+    };
+
+    const onBlurInputForm = (event: Event, index: number): void => {
+        const target = event.target as HTMLInputElement;
+
+        switch (target.id) {
+            case ItemTableFormName.Name:
+                setItemValueList(spliceItemValueList(ItemTableFormName.Name, target.value, index, itemValueList));
+                break;
+            case ItemTableFormName.Url:
+                setItemValueList(spliceItemValueList(ItemTableFormName.Url, target.value, index, itemValueList));
+                break;
+            default:
+                break;
+        }
+    };
 
     return (
         <IndexPage
