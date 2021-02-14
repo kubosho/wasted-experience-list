@@ -33,7 +33,7 @@ export const Main = (): JSX.Element => {
         storage?.set(STORAGE_KEY, itemValueList);
     }, [itemValueList]);
 
-    const saveInputText = (event: Event, index: number): void => {
+    const setInputText = (event: Event, index: number): void => {
         const target = event.target as HTMLInputElement;
         switch (target.id) {
             case ItemTableFormName.Name:
@@ -58,7 +58,7 @@ export const Main = (): JSX.Element => {
         setItemValueList(newList);
     };
 
-    const onBlurInputForm = (event: Event, index: number): void => saveInputText(event, index);
+    const onBlurInputForm = (event: Event, index: number): void => setInputText(event, index);
 
     return (
         <IndexPage
