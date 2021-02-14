@@ -1,6 +1,6 @@
 {
     "name": "Wasted experience list",
-    "description": "A wasted experience Web site list.",
+    "description": "This browser extension are listed a wasted experience Web site.",
     "version": "1.0.0",
     "manifest_version": 2,
     "background": {

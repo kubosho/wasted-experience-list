@@ -1,7 +1,7 @@
 {
     "name": "wasted-experience-list",
     "version": "1.0.0",
-    "description": "A wasted experience Web site list.",
+    "description": "This browser extension are listed a wasted experience Web site.",
     "author": "Shota Kubota <ta2@o2p.jp>",
     "license": "MIT",
     "private": true,
