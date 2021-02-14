@@ -25,7 +25,10 @@ class TimeTrackerOfSpentOnPage {
                 return;
             }
 
-            this._saveToStorage(itemValueList, index);
+            const value = itemValueList[index];
+            itemValueList[index] = createItemValue({ ...value, time: (value.time += SECONDS) });
+
+            this._saveToStorage(itemValueList);
         }, SECONDS);
     }
 
@@ -36,11 +39,7 @@ class TimeTrackerOfSpentOnPage {
         }
     }
 
-    private async _saveToStorage(itemValueList: ItemValue[], index: number): Promise<void> {
-        const value = itemValueList[index];
-
-        itemValueList[index] = createItemValue({ ...value, time: (value.time += SECONDS) });
-
+    private _saveToStorage(itemValueList: ItemValue[]): void {
         setTimeout(() => {
             this._storage.set(STORAGE_KEY, itemValueList);
         });
