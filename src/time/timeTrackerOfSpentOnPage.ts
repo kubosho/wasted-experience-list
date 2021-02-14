@@ -6,8 +6,8 @@ import { getSyncStorage } from '../storage/syncStorage';
 export interface TimeTrackerOfSpentOnPage {
     itemValueList: ItemValue[] | null;
 
-    track(pageUrl: string): void;
-    autoTrack(pageUrl: string): void;
+    track(pageUrl: string, callback?: (itemValueList: ItemValue[] | null) => void): void;
+    autoTrack(pageUrl: string, callback?: (itemValueList: ItemValue[] | null) => void): void;
     stopAutoTrack(): void;
     saveToStorage(itemValueList: ItemValue[]): void;
 }
@@ -31,7 +31,7 @@ class TimeTrackerOfSpentOnPageImpl implements TimeTrackerOfSpentOnPage {
         return this._itemValueList;
     }
 
-    track(pageUrl: string): void {
+    track(pageUrl: string, callback?: (itemValueList: ItemValue[] | null) => void): void {
         if (!this._itemValueList) {
             return;
         }
@@ -46,10 +46,13 @@ class TimeTrackerOfSpentOnPageImpl implements TimeTrackerOfSpentOnPage {
         const newList = replaceValueAtItemValueList(this._itemValueList, index, newValue);
 
         this._itemValueList = newList;
+        callback && callback(this._itemValueList);
     }
 
-    autoTrack(pageUrl: string): void {
-        this._intervalId = window.setInterval(() => this.track(pageUrl), SECONDS);
+    autoTrack(pageUrl: string, callback?: (itemValueList: ItemValue[] | null) => void): void {
+        this._intervalId = window.setInterval(() => {
+            this.track(pageUrl, callback);
+        }, SECONDS);
     }
 
     stopAutoTrack(): void {
