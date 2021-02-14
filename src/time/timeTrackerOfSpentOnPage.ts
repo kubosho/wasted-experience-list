@@ -3,7 +3,14 @@ import { StorageWrapper, STORAGE_KEY } from '../storage/storageWrapper';
 import { createItemValue, ItemValue } from '../wasted_experience_item/itemValue';
 import { getSyncStorage } from '../storage/syncStorage';
 
-class TimeTrackerOfSpentOnPage {
+export interface TimeTrackerOfSpentOnPage {
+    itemValueList: ItemValue[] | null;
+    track(pageUrl: string): Promise<void>;
+    untrack(): void;
+    saveToStorage(itemValueList: ItemValue[]): void;
+}
+
+class TimeTrackerOfSpentOnPageImpl implements TimeTrackerOfSpentOnPage {
     private _storage: StorageWrapper;
     private _intervalId: number | null;
     private _itemValueList: ItemValue[] | null;
@@ -66,5 +73,5 @@ export function createTimeTrackerOfSpentOnPage(storage?: StorageWrapper): TimeTr
         return null;
     }
 
-    return new TimeTrackerOfSpentOnPage(s);
+    return new TimeTrackerOfSpentOnPageImpl(s);
 }
