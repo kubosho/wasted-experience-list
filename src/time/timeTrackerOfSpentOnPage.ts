@@ -1,7 +1,6 @@
 import { SECONDS } from '../time/time';
 import { StorageWrapper, STORAGE_KEY } from '../storage/storageWrapper';
 import { createItemValue, ItemValue } from '../wasted_experience_item/itemValue';
-import { getTabData } from '../tab/tabData';
 import { getSyncStorage } from '../storage/syncStorage';
 
 class TimeTrackerOfSpentOnPage {
@@ -23,10 +22,7 @@ class TimeTrackerOfSpentOnPage {
         return this._itemValueList;
     }
 
-    async track(tabId: number): Promise<void> {
-        const tab = await getTabData(tabId);
-        const pageUrl = tab.url;
-
+    async track(pageUrl: string): Promise<void> {
         this._intervalId = window.setInterval(async () => {
             if (!this._itemValueList) {
                 return;
@@ -63,12 +59,12 @@ function replaceValueAtItemValueList(baseList: ItemValue[], index: number, value
     return newList;
 }
 
-export function createTimeTrackerOfSpentOnPage(): TimeTrackerOfSpentOnPage | null {
-    const storage = getSyncStorage();
+export function createTimeTrackerOfSpentOnPage(storage?: StorageWrapper): TimeTrackerOfSpentOnPage | null {
+    const s = storage ?? getSyncStorage();
 
-    if (!storage) {
+    if (!s) {
         return null;
     }
 
-    return new TimeTrackerOfSpentOnPage(storage);
+    return new TimeTrackerOfSpentOnPage(s);
 }
