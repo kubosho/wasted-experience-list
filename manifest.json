@@ -8,7 +8,7 @@
     },
     "browser_action": {
         "default_title": "Wasted experience list",
-        "default_popup": "./index.html"
+        "default_popup": "./popup.html"
     },
     "permissions": ["storage", "tabs"]
 }

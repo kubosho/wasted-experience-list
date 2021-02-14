@@ -12,7 +12,7 @@ const OUT_DIR = 'bundle';
 module.exports = {
     entry: {
         background: path.join(__dirname, 'lib', 'background.js'),
-        main: path.join(__dirname, 'lib', 'main.js'),
+        popup: path.join(__dirname, 'lib', 'popup.js'),
     },
     output: {
         path: path.join(__dirname, OUT_DIR),
@@ -41,7 +41,7 @@ module.exports = {
                     to: path.join(__dirname, OUT_DIR),
                 },
                 {
-                    from: path.join(__dirname, PUBLIC_DIR, 'index.html'),
+                    from: path.join(__dirname, PUBLIC_DIR, 'popup.html'),
                     to: path.join(__dirname, OUT_DIR),
                 },
             ],
