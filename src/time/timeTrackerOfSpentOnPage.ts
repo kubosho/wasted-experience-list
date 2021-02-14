@@ -5,8 +5,10 @@ import { getSyncStorage } from '../storage/syncStorage';
 
 export interface TimeTrackerOfSpentOnPage {
     itemValueList: ItemValue[] | null;
-    track(pageUrl: string): Promise<void>;
-    untrack(): void;
+
+    track(pageUrl: string): void;
+    autoTrack(pageUrl: string): void;
+    stopAutoTrack(): void;
     saveToStorage(itemValueList: ItemValue[]): void;
 }
 
@@ -29,26 +31,28 @@ class TimeTrackerOfSpentOnPageImpl implements TimeTrackerOfSpentOnPage {
         return this._itemValueList;
     }
 
-    async track(pageUrl: string): Promise<void> {
-        this._intervalId = window.setInterval(async () => {
-            if (!this._itemValueList) {
-                return;
-            }
+    track(pageUrl: string): void {
+        if (!this._itemValueList) {
+            return;
+        }
 
-            const index = this._itemValueList.findIndex((itemValue) => itemValue.url === pageUrl);
-            if (index < 0) {
-                return;
-            }
+        const index = this._itemValueList.findIndex((itemValue) => itemValue.url === pageUrl);
+        if (index < 0) {
+            return;
+        }
 
-            const prevValue = this._itemValueList[index];
-            const newValue = createItemValue({ ...prevValue, time: (prevValue.time += SECONDS) });
-            const newList = replaceValueAtItemValueList(this._itemValueList, index, newValue);
+        const prevValue = this._itemValueList[index];
+        const newValue = createItemValue({ ...prevValue, time: (prevValue.time += SECONDS) });
+        const newList = replaceValueAtItemValueList(this._itemValueList, index, newValue);
 
-            this._itemValueList = newList;
-        }, SECONDS);
+        this._itemValueList = newList;
     }
 
-    untrack(): void {
+    autoTrack(pageUrl: string): void {
+        this._intervalId = window.setInterval(() => this.track(pageUrl), SECONDS);
+    }
+
+    stopAutoTrack(): void {
         if (this._intervalId !== null) {
             clearInterval(this._intervalId);
             this._intervalId = null;

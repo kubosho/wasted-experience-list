@@ -18,8 +18,8 @@ class Background {
             return;
         }
 
-        this._timeTrackerOfSpentOnPage?.untrack();
-        this._timeTrackerOfSpentOnPage?.track(pageUrl);
+        this._timeTrackerOfSpentOnPage?.stopAutoTrack();
+        this._timeTrackerOfSpentOnPage?.autoTrack(pageUrl);
     }
 
     private _saveStorage(): void {
