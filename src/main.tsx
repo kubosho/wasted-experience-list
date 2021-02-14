@@ -8,8 +8,12 @@ import { itemValueListState } from './wasted_experience_item/itemValueListState'
 import { calculatedTotalTimeState } from './time/calculatedTotalTimeState';
 import { createItemValue, ItemValue } from './wasted_experience_item/itemValue';
 import { IndexPage } from './pages/Index';
-import { STORAGE_KEY } from './storage/storageWrapper';
+import { StorageWrapper, STORAGE_KEY } from './storage/storageWrapper';
 import { getSyncStorage } from './storage/syncStorage';
+
+type Props = {
+    storage: StorageWrapper | null;
+};
 
 const ITEM_INITIAL_VALUE = {
     name: '',
@@ -17,9 +21,7 @@ const ITEM_INITIAL_VALUE = {
     time: 0,
 };
 
-const storage = getSyncStorage();
-
-export const Main = (): JSX.Element => {
+export const Main = ({ storage }: Props): JSX.Element => {
     const [itemValueList, setItemValueList] = useRecoilState(itemValueListState);
     const totalTime = useRecoilValue(calculatedTotalTimeState);
 
@@ -27,11 +29,11 @@ export const Main = (): JSX.Element => {
         storage?.get<ItemValue[]>(STORAGE_KEY).then((value) => {
             setItemValueList(value);
         });
-    }, [setItemValueList]);
+    }, [storage, setItemValueList]);
 
     useEffect(() => {
         storage?.set(STORAGE_KEY, itemValueList);
-    }, [itemValueList]);
+    }, [storage, itemValueList]);
 
     const setInputText = (event: Event, index: number): void => {
         const target = event.target as HTMLInputElement;
@@ -85,9 +87,11 @@ function spliceItemValueList(key: string, value: string, index: number, baseItem
 
 const rootElement = document.querySelector('#wasted-experience-list');
 if (rootElement !== null) {
+    const storage = getSyncStorage();
+
     render(
         <RecoilRoot>
-            <Main />
+            <Main storage={storage} />
         </RecoilRoot>,
         rootElement,
     );
