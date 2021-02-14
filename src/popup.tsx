@@ -10,6 +10,7 @@ import { createItemValue, ItemValue } from './wasted_experience_item/itemValue';
 import { IndexPage } from './pages/Index';
 import { StorageWrapper, STORAGE_KEY } from './storage/storageWrapper';
 import { getSyncStorage } from './storage/syncStorage';
+import { createTimeTrackerOfSpentOnPage } from './time/timeTrackerOfSpentOnPage';
 
 type Props = {
     storage: StorageWrapper | null;
@@ -26,23 +27,47 @@ export const Main = ({ storage }: Props): JSX.Element => {
     const totalTime = useRecoilValue(calculatedTotalTimeState);
 
     useEffect(() => {
+        const timeTrackerOfSpentOnPage = createTimeTrackerOfSpentOnPage();
+
+        chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
+            const pageUrl = tabs[0].url;
+
+            if (!pageUrl) {
+                return;
+            }
+
+            timeTrackerOfSpentOnPage?.autoTrack(pageUrl, (itemValueList) => {
+                itemValueList && setItemValueList(itemValueList);
+            });
+        });
+    }, [setItemValueList]);
+
+    useEffect(() => {
         storage?.get<ItemValue[]>(STORAGE_KEY).then((value) => {
             setItemValueList(value);
         });
     }, [storage, setItemValueList]);
 
-    useEffect(() => {
+    const saveStorage = (itemValueList: ItemValue[]): void => {
         storage?.set(STORAGE_KEY, itemValueList);
-    }, [storage, itemValueList]);
+    };
 
     const setInputText = (event: Event, index: number): void => {
         const target = event.target as HTMLInputElement;
         switch (target.id) {
             case ItemTableFormName.Name:
-                setItemValueList(spliceItemValueList(ItemTableFormName.Name, target.value, index, itemValueList));
+                {
+                    const newList = spliceItemValueList(ItemTableFormName.Name, target.value, index, itemValueList);
+                    setItemValueList(newList);
+                    saveStorage(newList);
+                }
                 break;
             case ItemTableFormName.Url:
-                setItemValueList(spliceItemValueList(ItemTableFormName.Url, target.value, index, itemValueList));
+                {
+                    const newList = spliceItemValueList(ItemTableFormName.Url, target.value, index, itemValueList);
+                    setItemValueList(newList);
+                    saveStorage(newList);
+                }
                 break;
             default:
                 break;
@@ -53,11 +78,13 @@ export const Main = ({ storage }: Props): JSX.Element => {
         const id = uuid();
         const newList = [...itemValueList, { id, ...ITEM_INITIAL_VALUE }];
         setItemValueList(newList);
+        saveStorage(newList);
     };
 
     const onDeleteItem = (index: number): void => {
         const newList = itemValueList.filter((_value, i) => index !== i);
         setItemValueList(newList);
+        saveStorage(newList);
     };
 
     const onBlurInputForm = (event: Event, index: number): void => setInputText(event, index);
