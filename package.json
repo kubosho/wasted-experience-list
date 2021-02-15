@@ -36,7 +36,7 @@
         "@babel/preset-env": "^7.12.16",
         "@babel/preset-typescript": "^7.12.16",
         "@storybook/addon-actions": "^6.1.18",
-        "@storybook/addon-essentials": "^6.1.17",
+        "@storybook/addon-essentials": "^6.1.18",
         "@storybook/addon-links": "^6.1.18",
         "@storybook/preact": "^6.1.17",
         "@types/chrome": "^0.0.129",
