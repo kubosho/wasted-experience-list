@@ -30,8 +30,7 @@ export const Main = ({ storage }: Props): JSX.Element => {
         const timeTrackerOfSpentOnPage = createTimeTrackerOfSpentOnPage();
 
         chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-            const pageUrl = tabs[0].url;
-
+            const pageUrl = tabs.length > 0 && tabs[0].url;
             if (!pageUrl) {
                 return;
             }
