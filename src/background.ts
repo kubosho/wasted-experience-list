@@ -1,7 +1,8 @@
 import { getTabData } from './tab/tabData';
 import { TabChangeInfoStatus } from './tab/tabChangeInfo';
 import { TimeTrackerOfSpentOnPage, createTimeTrackerOfSpentOnPage } from './time/timeTrackerOfSpentOnPage';
-import { convertMsToTime } from './time/millisecondsToTimeConverter';
+import { convertMsToMMSSFormat, convertMsToTime } from './time/millisecondsToTimeConverter';
+import { HOUR_TO_MILLISECONDS } from './time/time';
 
 class Background {
     private _timeTrackerOfSpentOnPage: TimeTrackerOfSpentOnPage | null;
@@ -20,11 +21,20 @@ class Background {
         }
 
         this._timeTrackerOfSpentOnPage?.autoTrack(pageUrl, (_prevValue, value) => {
-            if (value !== null) {
-                chrome.browserAction.setBadgeText({
-                    text: convertMsToTime(value.time),
-                });
+            if (value === null) {
+                return;
             }
+
+            if (value.time < 1 * HOUR_TO_MILLISECONDS) {
+                chrome.browserAction.setBadgeText({
+                    text: convertMsToMMSSFormat(value.time),
+                });
+                return;
+            }
+
+            chrome.browserAction.setBadgeText({
+                text: convertMsToTime(value.time),
+            });
         });
     }
 

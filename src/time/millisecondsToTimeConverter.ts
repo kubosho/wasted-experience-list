@@ -1,9 +1,8 @@
 import dayjs from 'dayjs';
 import duration from 'dayjs/plugin/duration';
 
+import { DAY_TO_MILLISECONDS } from './time';
 import { milliseconds } from './millisecondsType';
-
-const DAY_TO_MILLISECONDS = 60 * 60 * 24 * 1000;
 
 export function convertMsToTime(durationMs: milliseconds): string {
     dayjs.extend(duration);
@@ -20,4 +19,10 @@ export function convertMsToTime(durationMs: milliseconds): string {
     }
 
     return timeString;
+}
+
+export function convertMsToMMSSFormat(durationMs: milliseconds): string {
+    dayjs.extend(duration);
+
+    return dayjs.duration(durationMs).format('mm:ss');
 }
