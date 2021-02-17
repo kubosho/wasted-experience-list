@@ -6,20 +6,33 @@ import { getSyncStorage } from '../storage/syncStorage';
 export interface TimeTrackerOfSpentOnPage {
     itemValueList: ItemValue[] | null;
 
-    track(pageUrl: string, callback?: (itemValueList: ItemValue[] | null) => void): void;
-    autoTrack(pageUrl: string, callback?: (itemValueList: ItemValue[] | null) => void): void;
-    stopAutoTrack(): void;
+    track(
+        pageUrl: string,
+        callback?: (prevValue: ItemValue | null, value: ItemValue | null, itemValueList: ItemValue[] | null) => void,
+    ): void;
+    autoTrack(
+        pageUrl: string,
+        callback?: (prevValue: ItemValue | null, value: ItemValue | null, itemValueList: ItemValue[] | null) => void,
+    ): void;
+    stopAutoTrack(
+        callback?: (prevValue: ItemValue | null, value: ItemValue | null, itemValueList: ItemValue[] | null) => void,
+    ): void;
     saveToStorage(itemValueList: ItemValue[]): void;
 }
 
 class TimeTrackerOfSpentOnPageImpl implements TimeTrackerOfSpentOnPage {
     private _storage: StorageWrapper;
     private _intervalId: number | null;
+    private _prevItemValue: ItemValue | null;
+    private _itemValue: ItemValue | null;
     private _itemValueList: ItemValue[] | null;
 
     constructor(storage: StorageWrapper) {
         this._storage = storage;
         this._intervalId = null;
+
+        this._prevItemValue = null;
+        this._itemValue = null;
         this._itemValueList = null;
 
         this._storage?.get<ItemValue[]>(STORAGE_KEY).then((valueList) => {
@@ -31,7 +44,10 @@ class TimeTrackerOfSpentOnPageImpl implements TimeTrackerOfSpentOnPage {
         return this._itemValueList;
     }
 
-    track(pageUrl: string, callback?: (itemValueList: ItemValue[] | null) => void): void {
+    track(
+        pageUrl: string,
+        callback?: (prevValue: ItemValue | null, value: ItemValue | null, itemValueList: ItemValue[] | null) => void,
+    ): void {
         if (!this._itemValueList) {
             return;
         }
@@ -41,24 +57,32 @@ class TimeTrackerOfSpentOnPageImpl implements TimeTrackerOfSpentOnPage {
             return;
         }
 
-        const prevValue = this._itemValueList[index];
-        const newValue = createItemValue({ ...prevValue, time: (prevValue.time += SECONDS) });
-        const newList = replaceValueAtItemValueList(this._itemValueList, index, newValue);
+        this._prevItemValue = this._itemValueList[index];
+        this._itemValue = createItemValue({ ...this._prevItemValue, time: (this._prevItemValue.time += SECONDS) });
+        this._itemValueList = replaceValueAtItemValueList(this._itemValueList, index, this._itemValue);
 
-        this._itemValueList = newList;
-        callback && callback(this._itemValueList);
+        callback && callback(this._prevItemValue, this._itemValue, this._itemValueList);
     }
 
-    autoTrack(pageUrl: string, callback?: (itemValueList: ItemValue[] | null) => void): void {
-        this._intervalId = window.setInterval(() => {
+    autoTrack(
+        pageUrl: string,
+        callback?: (prevValue: ItemValue | null, value: ItemValue | null, itemValueList: ItemValue[] | null) => void,
+    ): void {
+        const startAutoTrack = (): void => {
             this.track(pageUrl, callback);
-        }, SECONDS);
+            this._intervalId = window.setTimeout(startAutoTrack, SECONDS);
+        };
+
+        startAutoTrack();
     }
 
-    stopAutoTrack(): void {
+    stopAutoTrack(
+        callback?: (prevValue: ItemValue | null, value: ItemValue | null, itemValueList: ItemValue[] | null) => void,
+    ): void {
         if (this._intervalId !== null) {
-            clearInterval(this._intervalId);
+            clearTimeout(this._intervalId);
             this._intervalId = null;
+            callback && callback(this._prevItemValue, this._itemValue, this._itemValueList);
         }
     }
 

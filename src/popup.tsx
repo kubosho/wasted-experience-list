@@ -35,7 +35,7 @@ export const Main = ({ storage }: Props): JSX.Element => {
                 return;
             }
 
-            timeTrackerOfSpentOnPage?.autoTrack(pageUrl, (itemValueList) => {
+            timeTrackerOfSpentOnPage?.autoTrack(pageUrl, (_prevValue, _value, itemValueList) => {
                 itemValueList && setItemValueList(itemValueList);
             });
         });
