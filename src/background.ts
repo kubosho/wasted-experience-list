@@ -1,6 +1,7 @@
 import { getTabData } from './tab/tabData';
 import { TabChangeInfoStatus } from './tab/tabChangeInfo';
 import { TimeTrackerOfSpentOnPage, createTimeTrackerOfSpentOnPage } from './time/timeTrackerOfSpentOnPage';
+import { convertMsToTime } from './time/millisecondsToTimeConverter';
 
 class Background {
     private _timeTrackerOfSpentOnPage: TimeTrackerOfSpentOnPage | null;
@@ -18,8 +19,21 @@ class Background {
             return;
         }
 
-        this._timeTrackerOfSpentOnPage?.stopAutoTrack();
-        this._timeTrackerOfSpentOnPage?.autoTrack(pageUrl);
+        this._timeTrackerOfSpentOnPage?.autoTrack(pageUrl, (_prevValue, value) => {
+            if (value !== null) {
+                chrome.browserAction.setBadgeText({
+                    text: convertMsToTime(value.time),
+                });
+            }
+        });
+    }
+
+    private _deactivateTrack(): void {
+        this._timeTrackerOfSpentOnPage?.stopAutoTrack(() => {
+            chrome.browserAction.setBadgeText({
+                text: '',
+            });
+        });
     }
 
     private _saveStorage(): void {
@@ -29,18 +43,21 @@ class Background {
 
     private _initEventListener(): void {
         chrome.tabs.onActivated.addListener(({ tabId }) => {
+            this._deactivateTrack();
             this._activateTrack(tabId);
             this._saveStorage();
         });
 
         chrome.tabs.onUpdated.addListener((tabId, changeInfo) => {
             if (changeInfo.status === TabChangeInfoStatus.Complete) {
+                this._deactivateTrack();
                 this._activateTrack(tabId);
                 this._saveStorage();
             }
         });
 
         chrome.tabs.onRemoved.addListener(() => {
+            this._deactivateTrack();
             this._saveStorage();
         });
     }
