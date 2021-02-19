@@ -10,7 +10,7 @@ export interface TimeTrackerOfSpentOnPage {
         pageUrl: string,
         callback?: (prevValue: ItemValue | null, value: ItemValue | null, itemValueList: ItemValue[] | null) => void,
     ): void;
-    autoTrack(
+    startAutoTrack(
         pageUrl: string,
         callback?: (prevValue: ItemValue | null, value: ItemValue | null, itemValueList: ItemValue[] | null) => void,
     ): void;
@@ -64,7 +64,7 @@ class TimeTrackerOfSpentOnPageImpl implements TimeTrackerOfSpentOnPage {
         callback && callback(this._prevItemValue, this._itemValue, this._itemValueList);
     }
 
-    autoTrack(
+    startAutoTrack(
         pageUrl: string,
         callback?: (prevValue: ItemValue | null, value: ItemValue | null, itemValueList: ItemValue[] | null) => void,
     ): void {

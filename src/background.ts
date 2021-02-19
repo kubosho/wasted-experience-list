@@ -20,7 +20,7 @@ class Background {
             return;
         }
 
-        this._timeTrackerOfSpentOnPage?.autoTrack(pageUrl, (_prevValue, value) => {
+        this._timeTrackerOfSpentOnPage?.startAutoTrack(pageUrl, (_prevValue, value) => {
             if (value === null) {
                 return;
             }
