@@ -8,6 +8,7 @@
     "scripts": {
         "bundle_analyze": "babel ./src --out-dir ./lib --extensions '.ts,.tsx' && BUNDLE_ANALYZE=true webpack",
         "build": "babel ./src --out-dir ./lib --extensions '.ts,.tsx' && NODE_ENV=production webpack",
+        "build_dev": "babel ./src --out-dir ./lib --extensions '.ts,.tsx' && NODE_ENV=development webpack",
         "format": "prettier --config .prettierrc.js --write **/*.{js,jsx,ts,tsx}",
         "check_format": "npm run format && git diff --exit-code",
         "lint": "eslint --config .eslintrc.js --ext .ts,.tsx .",
