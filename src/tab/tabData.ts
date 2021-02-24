@@ -1,3 +1,7 @@
-export function getTabData(tabId: number): Promise<chrome.tabs.Tab> {
-    return new Promise((resolve) => chrome.tabs.get(tabId, resolve));
+export function getTabData(): Promise<chrome.tabs.Tab> {
+    return new Promise((resolve) => {
+        chrome.tabs.query({ active: true, currentWindow: true }, (tabs: chrome.tabs.Tab[]) => {
+            resolve(tabs[0]);
+        });
+    });
 }
