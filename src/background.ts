@@ -1,13 +1,12 @@
 import { getTabData } from './tab/tabData';
 import { TabChangeInfoStatus } from './tab/tabChangeInfo';
 import { TimeTrackerOfSpentOnPage, createTimeTrackerOfSpentOnPage } from './time/timeTrackerOfSpentOnPage';
-import { convertMsToMMSSFormat, convertMsToTime } from './time/millisecondsToTimeConverter';
-import { HOUR_TO_MILLISECONDS } from './time/time';
 import { StorageWrapper, STORAGE_KEY } from './storage/storageWrapper';
 import { itemValueListConnectPort } from './wasted_experience_item/itemValueListConnectPort';
 import { ItemValue } from './wasted_experience_item/itemValue';
 import { popupInitialStateConnectPort } from './popupInitialStateConnectPort';
 import { getSyncStorage } from './storage/syncStorage';
+import { setBadgeText } from './badge/badgeText';
 
 class Background {
     private _storage: StorageWrapper;
@@ -56,42 +55,27 @@ class Background {
         return pageUrl;
     }
 
-    private _setBadgeText(time?: number): void {
-        if (!time) {
-            chrome.browserAction.setBadgeText({
-                text: '',
-            });
-            return;
-        }
-
-        const badgeText = time < 1 * HOUR_TO_MILLISECONDS ? convertMsToMMSSFormat(time) : convertMsToTime(time);
-
-        chrome.browserAction.setBadgeText({
-            text: badgeText,
-        });
-    }
-
     private _initChromeTabsEventListener(): void {
         chrome.tabs.onActivated.addListener(() => {
-            this._setBadgeText();
+            setBadgeText();
             this._deactivateTrack();
             this._activateTrack(this._itemValueList, (value) => {
-                this._setBadgeText(value?.time);
+                setBadgeText(value?.time);
             });
         });
 
         chrome.tabs.onUpdated.addListener((_tabId, changeInfo) => {
             if (changeInfo.status === TabChangeInfoStatus.Complete) {
-                this._setBadgeText();
+                setBadgeText();
                 this._deactivateTrack();
                 this._activateTrack(this._itemValueList, (value) => {
-                    this._setBadgeText(value?.time);
+                    setBadgeText(value?.time);
                 });
             }
         });
 
         chrome.tabs.onRemoved.addListener(() => {
-            this._setBadgeText();
+            setBadgeText();
             this._deactivateTrack();
         });
 
@@ -117,7 +101,7 @@ class Background {
         this._deactivateTrack();
         port.postMessage(this._itemValueList);
         this._activateTrack(this._itemValueList, (value, newList) => {
-            this._setBadgeText(value?.time);
+            setBadgeText(value?.time);
             port.postMessage(newList);
         });
 
@@ -130,7 +114,7 @@ class Background {
 
             this._deactivateTrack();
             this._activateTrack(this._itemValueList, (value, newList) => {
-                this._setBadgeText(value?.time);
+                setBadgeText(value?.time);
                 port.postMessage(newList);
             });
         });
@@ -141,7 +125,7 @@ class Background {
             await this._storage.set(STORAGE_KEY, this._itemValueList);
             this._deactivateTrack();
             this._activateTrack(this._itemValueList, (value) => {
-                this._setBadgeText(value?.time);
+                setBadgeText(value?.time);
             });
         });
     }
