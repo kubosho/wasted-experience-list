@@ -1,4 +1,4 @@
-import { getTabData } from './tab/tabData';
+import { getCurrentPageUrl } from './tab/tabData';
 import { TabChangeInfoStatus } from './tab/tabChangeInfo';
 import { TimeTrackerOfSpentOnPage, createTimeTrackerOfSpentOnPage } from './time/timeTrackerOfSpentOnPage';
 import { StorageWrapper, STORAGE_KEY } from './storage/storageWrapper';
@@ -25,7 +25,7 @@ class Background {
         itemValueList: ItemValue[],
         callback?: (itemValue: ItemValue | null, itemValueList: ItemValue[] | null) => void,
     ): Promise<void> {
-        const pageUrl = await this._getCurrentPageUrl();
+        const pageUrl = await getCurrentPageUrl();
 
         if (!pageUrl) {
             return;
@@ -42,17 +42,6 @@ class Background {
 
     private _deactivateTrack(): void {
         this._timeTrackerOfSpentOnPage?.stopAutoTrack();
-    }
-
-    private async _getCurrentPageUrl(): Promise<string | null> {
-        const tab = await getTabData();
-        const pageUrl = tab.url;
-
-        if (!pageUrl || pageUrl === '') {
-            return null;
-        }
-
-        return pageUrl;
     }
 
     private _initChromeTabsEventListener(): void {
