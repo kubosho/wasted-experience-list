@@ -1,6 +1,6 @@
 import { h, render } from 'preact';
 import { useEffect } from 'preact/hooks';
-import { RecoilRoot, useRecoilState, useRecoilValue } from 'recoil';
+import { MutableSnapshot, RecoilRoot, useRecoilState, useRecoilValue } from 'recoil';
 import { v4 as uuid } from 'uuid';
 
 import { ItemTableFormName } from './components/itemTableFormName';
@@ -8,13 +8,9 @@ import { itemValueListState } from './wasted_experience_item/itemValueListState'
 import { calculatedTotalTimeState } from './time/calculatedTotalTimeState';
 import { createItemValue, ItemValue } from './wasted_experience_item/itemValue';
 import { IndexPage } from './pages/Index';
-import { StorageWrapper, STORAGE_KEY } from './storage/storageWrapper';
-import { getSyncStorage } from './storage/syncStorage';
-import { createTimeTrackerOfSpentOnPage } from './time/timeTrackerOfSpentOnPage';
-
-type Props = {
-    storage: StorageWrapper | null;
-};
+import { connectItemValueListConnectPort } from './wasted_experience_item/itemValueListConnectPort';
+import { popupInitialStateConnectPort } from './popupInitialStateConnectPort';
+import { useInstance } from './react/useInstance';
 
 const ITEM_INITIAL_VALUE = {
     name: '',
@@ -22,33 +18,14 @@ const ITEM_INITIAL_VALUE = {
     time: 0,
 };
 
-export const Main = ({ storage }: Props): JSX.Element => {
+export const Main = (): JSX.Element => {
     const [itemValueList, setItemValueList] = useRecoilState(itemValueListState);
     const totalTime = useRecoilValue(calculatedTotalTimeState);
+    const itemValueListPort = useInstance<chrome.runtime.Port>(() => connectItemValueListConnectPort());
 
-    useEffect(() => {
-        const timeTrackerOfSpentOnPage = createTimeTrackerOfSpentOnPage();
-
-        chrome.tabs.query({ active: true, lastFocusedWindow: true }, (tabs) => {
-            const pageUrl = tabs.length > 0 && tabs[0].url;
-            if (!pageUrl) {
-                return;
-            }
-
-            timeTrackerOfSpentOnPage?.autoTrack(pageUrl, (_prevValue, _value, itemValueList) => {
-                itemValueList && setItemValueList(itemValueList);
-            });
-        });
-    }, [setItemValueList]);
-
-    useEffect(() => {
-        storage?.get<ItemValue[]>(STORAGE_KEY).then((value) => {
-            setItemValueList(value);
-        });
-    }, [storage, setItemValueList]);
-
-    const saveStorage = (itemValueList: ItemValue[]): void => {
-        storage?.set(STORAGE_KEY, itemValueList);
+    const saveItemValueList = (newList: ItemValue[]): void => {
+        setItemValueList(newList);
+        itemValueListPort.postMessage(newList);
     };
 
     const setInputText = (event: Event, index: number): void => {
@@ -57,15 +34,13 @@ export const Main = ({ storage }: Props): JSX.Element => {
             case ItemTableFormName.Name:
                 {
                     const newList = spliceItemValueList(ItemTableFormName.Name, target.value, index, itemValueList);
-                    setItemValueList(newList);
-                    saveStorage(newList);
+                    saveItemValueList(newList);
                 }
                 break;
             case ItemTableFormName.Url:
                 {
                     const newList = spliceItemValueList(ItemTableFormName.Url, target.value, index, itemValueList);
-                    setItemValueList(newList);
-                    saveStorage(newList);
+                    saveItemValueList(newList);
                 }
                 break;
             default:
@@ -76,17 +51,25 @@ export const Main = ({ storage }: Props): JSX.Element => {
     const onClickAddItem = (): void => {
         const id = uuid();
         const newList = [...itemValueList, { id, ...ITEM_INITIAL_VALUE }];
-        setItemValueList(newList);
-        saveStorage(newList);
+        saveItemValueList(newList);
     };
 
     const onDeleteItem = (index: number): void => {
         const newList = itemValueList.filter((_value, i) => index !== i);
-        setItemValueList(newList);
-        saveStorage(newList);
+        saveItemValueList(newList);
     };
 
     const onBlurInputForm = (event: Event, index: number): void => setInputText(event, index);
+
+    useEffect(() => {
+        itemValueListPort.onMessage.addListener((newList: ItemValue[]) => {
+            setItemValueList(newList);
+        });
+
+        return () => {
+            itemValueListPort.disconnect();
+        };
+    }, [itemValueListPort, setItemValueList]);
 
     return (
         <IndexPage
@@ -113,12 +96,20 @@ function spliceItemValueList(key: string, value: string, index: number, baseItem
 
 const rootElement = document.querySelector('#wasted-experience-list');
 if (rootElement !== null) {
-    const storage = getSyncStorage();
+    const initialStatePort = chrome.runtime.connect(popupInitialStateConnectPort);
 
-    render(
-        <RecoilRoot>
-            <Main storage={storage} />
-        </RecoilRoot>,
-        rootElement,
-    );
+    initialStatePort.onMessage.addListener((itemValueList) => {
+        const initializeState = ({ set }: MutableSnapshot): void => {
+            set(itemValueListState, itemValueList);
+        };
+
+        render(
+            <RecoilRoot initializeState={initializeState}>
+                <Main />
+            </RecoilRoot>,
+            rootElement,
+        );
+
+        initialStatePort.disconnect();
+    });
 }
