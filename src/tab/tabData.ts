@@ -5,3 +5,14 @@ export function getTabData(): Promise<chrome.tabs.Tab> {
         });
     });
 }
+
+export async function getCurrentPageUrl(): Promise<string | null> {
+    const tab = await getTabData();
+    const pageUrl = tab.url;
+
+    if (!pageUrl || pageUrl === '') {
+        return null;
+    }
+
+    return pageUrl;
+}
