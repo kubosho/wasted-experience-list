@@ -8,8 +8,8 @@ import { itemValueListState } from './wasted_experience_item/itemValueListState'
 import { calculatedTotalTimeState } from './time/calculatedTotalTimeState';
 import { createItemValue, ItemValue } from './wasted_experience_item/itemValue';
 import { IndexPage } from './pages/Index';
-import { connectItemValueListConnectPort } from './wasted_experience_item/itemValueListConnectPort';
-import { connectPopupInitialStateConnectPort } from './popupInitialStateConnectPort';
+import { connectItemValueListConnectPort } from './chrome/port_connecter/itemValueListConnectPort';
+import { connectPopupInitialValueConnectPort } from './chrome/port_connecter/popupInitialValueConnectPort';
 import { useInstance } from './react/useInstance';
 
 const ITEM_INITIAL_VALUE = {
@@ -92,7 +92,7 @@ function spliceItemValueList(key: string, value: string, index: number, baseItem
 
 const rootElement = document.querySelector('#wasted-experience-list');
 if (rootElement !== null) {
-    const initialStatePort = connectPopupInitialStateConnectPort();
+    const initialStatePort = connectPopupInitialValueConnectPort();
 
     initialStatePort.onMessage.addListener((itemValueList) => {
         const initializeState = ({ set }: MutableSnapshot): void => {

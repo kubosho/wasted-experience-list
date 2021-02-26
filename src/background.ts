@@ -1,12 +1,12 @@
-import { getCurrentPageUrl } from './tab/tabData';
-import { TabChangeInfoStatus } from './tab/tabChangeInfo';
+import { getCurrentPageUrl } from './chrome/tab/tabData';
+import { TabChangeInfoStatus } from './chrome/tab/tabChangeInfo';
 import { TimeTrackerOfSpentOnPage, createTimeTrackerOfSpentOnPage } from './time/timeTrackerOfSpentOnPage';
 import { StorageWrapper, STORAGE_KEY } from './storage/storageWrapper';
-import { itemValueListConnectPort } from './wasted_experience_item/itemValueListConnectPort';
+import { itemValueListConnectPort } from './chrome/port_connecter/itemValueListConnectPort';
 import { ItemValue } from './wasted_experience_item/itemValue';
-import { popupInitialStateConnectPort } from './popupInitialStateConnectPort';
-import { getSyncStorage } from './storage/syncStorage';
-import { setBadgeText } from './badge/badgeText';
+import { popupInitialValueConnectPort } from './chrome/port_connecter/popupInitialValueConnectPort';
+import { getSyncStorage } from './chrome/storage/syncStorage';
+import { setBadgeText } from './chrome/badge/badgeText';
 
 class Background {
     private _storage: StorageWrapper;
@@ -66,7 +66,7 @@ class Background {
         });
 
         chrome.runtime.onConnect.addListener((port) => {
-            if (port.name === popupInitialStateConnectPort.name) {
+            if (port.name === popupInitialValueConnectPort.name) {
                 this._initPopup(port);
             }
 

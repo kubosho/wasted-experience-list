@@ -1,4 +1,4 @@
-import { StorageWrapper, createStorageWrapper } from './storageWrapper';
+import { StorageWrapper, createStorageWrapper } from '../../storage/storageWrapper';
 
 export function getSyncStorage(): StorageWrapper {
     const syncStorage = chrome.storage.sync;
