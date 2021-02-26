@@ -1,9 +1,8 @@
 import { selector } from 'recoil';
 
-import { itemValueListState } from '../wasted_experience_item/itemValueListState';
-
-import { convertMsToTime } from './millisecondsToTimeConverter';
-import { calcTotalTime } from './totalTimeCalculator';
+import { itemValueListState } from '../../wasted_experience_item/state/itemValueListState';
+import { convertMsToTime } from '../millisecondsToTimeConverter';
+import { calcTotalTime } from '../totalTimeCalculator';
 
 export const calculatedTotalTimeState = selector({
     key: 'calculatedTotalTimeState',
