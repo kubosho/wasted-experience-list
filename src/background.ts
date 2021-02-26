@@ -23,18 +23,8 @@ class Background {
         this._initItemValueList().then(() => this._initChromeTabsEventListener());
     }
 
-    private async _initItemValueList(): Promise<void> {
-        const itemValueList = await this._storage.get<ItemValue[]>(STORAGE_KEY);
-        this._itemValueList = itemValueList;
-        this._timeTrackerOfSpentOnPage.setItemValueList(itemValueList);
-    }
-
-    private _initChromeTabsEventListener(): void {
-        chrome.tabs.onActivated.addListener(async () => {
-            setBadgeText();
-            this._timeTrackerOfSpentOnPage.stopAutoTrack();
-
-            const pageUrl = await getCurrentPageUrl();
+    private _activateAutoTrack(): void {
+        getCurrentPageUrl().then((pageUrl) => {
             this._timeTrackerOfSpentOnPage.startAutoTrack(pageUrl, (value, newList) => {
                 if (this._itemValueListConnectPort !== null) {
                     this._itemValueListConnectPort.postMessage(newList);
@@ -45,22 +35,29 @@ class Background {
                 setBadgeText(value?.time);
             });
         });
+    }
+
+    private _deactivateAutoTrack(): void {
+        setBadgeText();
+        this._timeTrackerOfSpentOnPage.stopAutoTrack();
+    }
+
+    private async _initItemValueList(): Promise<void> {
+        const itemValueList = await this._storage.get<ItemValue[]>(STORAGE_KEY);
+        this._itemValueList = itemValueList;
+        this._timeTrackerOfSpentOnPage.setItemValueList(itemValueList);
+    }
+
+    private _initChromeTabsEventListener(): void {
+        chrome.tabs.onActivated.addListener(async () => {
+            this._deactivateAutoTrack();
+            this._activateAutoTrack();
+        });
 
         chrome.tabs.onUpdated.addListener(async (_tabId, changeInfo) => {
             if (changeInfo.status === TabChangeInfoStatus.Complete) {
-                setBadgeText();
-                this._timeTrackerOfSpentOnPage.stopAutoTrack();
-
-                const pageUrl = await getCurrentPageUrl();
-                this._timeTrackerOfSpentOnPage.startAutoTrack(pageUrl, (value, newList) => {
-                    if (this._itemValueListConnectPort !== null) {
-                        this._itemValueListConnectPort.postMessage(newList);
-                    }
-
-                    this._itemValueList = newList;
-                    this._timeTrackerOfSpentOnPage.setItemValueList(newList);
-                    setBadgeText(value?.time);
-                });
+                this._deactivateAutoTrack();
+                this._activateAutoTrack();
             }
         });
 
@@ -80,11 +77,11 @@ class Background {
         });
     }
 
-    private async _initPopup(port: chrome.runtime.Port): Promise<void> {
+    private _initPopup(port: chrome.runtime.Port): void {
         port.postMessage(this._itemValueList);
     }
 
-    private async _updatePopup(port: chrome.runtime.Port): Promise<void> {
+    private _updatePopup(port: chrome.runtime.Port): void {
         this._itemValueListConnectPort = port;
         port.postMessage(this._itemValueList);
 
