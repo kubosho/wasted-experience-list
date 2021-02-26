@@ -10,7 +10,7 @@ import { createItemValue, ItemValue } from './wasted_experience_item/itemValue';
 import { IndexPage } from './pages/Index';
 import { connectItemValueListConnectPort } from './chrome/port_connecter/itemValueListConnectPort';
 import { connectPopupInitialValueConnectPort } from './chrome/port_connecter/popupInitialValueConnectPort';
-import { useInstance } from './react/useInstance';
+import { useInstance } from './hooks/useInstance';
 
 const ITEM_INITIAL_VALUE = {
     name: '',
