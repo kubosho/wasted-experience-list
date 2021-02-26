@@ -62,8 +62,7 @@ class Background {
         });
 
         chrome.tabs.onRemoved.addListener(() => {
-            setBadgeText();
-            this._timeTrackerOfSpentOnPage.stopAutoTrack();
+            this._deactivateAutoTrack();
         });
 
         chrome.runtime.onConnect.addListener(async (port) => {
