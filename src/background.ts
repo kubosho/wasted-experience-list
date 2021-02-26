@@ -49,12 +49,12 @@ class Background {
     }
 
     private _initChromeTabsEventListener(): void {
-        chrome.tabs.onActivated.addListener(async () => {
+        chrome.tabs.onActivated.addListener(() => {
             this._deactivateAutoTrack();
             this._activateAutoTrack();
         });
 
-        chrome.tabs.onUpdated.addListener(async (_tabId, changeInfo) => {
+        chrome.tabs.onUpdated.addListener((_tabId, changeInfo) => {
             if (changeInfo.status === TabChangeInfoStatus.Complete) {
                 this._deactivateAutoTrack();
                 this._activateAutoTrack();
@@ -65,7 +65,7 @@ class Background {
             this._deactivateAutoTrack();
         });
 
-        chrome.runtime.onConnect.addListener(async (port) => {
+        chrome.runtime.onConnect.addListener((port) => {
             if (port.name === popupInitialStateConnectPort.name) {
                 this._initPopup(port);
             }
