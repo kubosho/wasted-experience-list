@@ -9,7 +9,7 @@ import { calculatedTotalTimeState } from './time/calculatedTotalTimeState';
 import { createItemValue, ItemValue } from './wasted_experience_item/itemValue';
 import { IndexPage } from './pages/Index';
 import { connectItemValueListConnectPort } from './wasted_experience_item/itemValueListConnectPort';
-import { popupInitialStateConnectPort } from './popupInitialStateConnectPort';
+import { connectPopupInitialStateConnectPort } from './popupInitialStateConnectPort';
 import { useInstance } from './react/useInstance';
 
 const ITEM_INITIAL_VALUE = {
@@ -65,10 +65,6 @@ export const Main = (): JSX.Element => {
         itemValueListPort.onMessage.addListener((newList: ItemValue[]) => {
             setItemValueList(newList);
         });
-
-        return () => {
-            itemValueListPort.disconnect();
-        };
     }, [itemValueListPort, setItemValueList]);
 
     return (
@@ -96,7 +92,7 @@ function spliceItemValueList(key: string, value: string, index: number, baseItem
 
 const rootElement = document.querySelector('#wasted-experience-list');
 if (rootElement !== null) {
-    const initialStatePort = chrome.runtime.connect(popupInitialStateConnectPort);
+    const initialStatePort = connectPopupInitialStateConnectPort();
 
     initialStatePort.onMessage.addListener((itemValueList) => {
         const initializeState = ({ set }: MutableSnapshot): void => {
