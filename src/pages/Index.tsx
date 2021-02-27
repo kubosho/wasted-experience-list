@@ -33,8 +33,8 @@ export const IndexPage = ({
 }: Props): JSX.Element => {
     return (
         <main className="spectrum-Body spectrum-Body--sizeM">
-            <h1 className="spectrum-Heading spectrum-Heading--sizeL">Wasted experience list</h1>
-            <p>
+            <h1 className="spectrum-Heading spectrum-Heading--sizeXXL">Wasted experience list</h1>
+            <p className="spectrum-Body spectrum-Body--sizeXXL">
                 <output>{totalTime}</output>
             </p>
             {itemValueList.length > 0 && (
