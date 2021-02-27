@@ -9,10 +9,16 @@ import { ItemTableFormName } from './itemTableFormName';
 export interface ItemTableProps {
     itemValueList: ItemValue[];
     onBlurInputForm: (event: Event, index: number) => void;
+    onKeyupInputForm: (event: KeyboardEvent, index: number) => void;
     onDeleteItem: (index: number) => void;
 }
 
-export const ItemTable = ({ itemValueList, onBlurInputForm, onDeleteItem }: ItemTableProps): JSX.Element => {
+export const ItemTable = ({
+    itemValueList,
+    onBlurInputForm,
+    onKeyupInputForm,
+    onDeleteItem,
+}: ItemTableProps): JSX.Element => {
     const itemNameRef = createRef<HTMLInputElement>();
 
     useEffect(() => {
@@ -41,6 +47,7 @@ export const ItemTable = ({ itemValueList, onBlurInputForm, onDeleteItem }: Item
                                     id={ItemTableFormName.Name}
                                     value={value.name}
                                     onBlur={(event) => onBlurInputForm(event, index)}
+                                    onKeyUp={(event) => onKeyupInputForm(event, index)}
                                 />
                             </label>
                         </td>
@@ -53,6 +60,7 @@ export const ItemTable = ({ itemValueList, onBlurInputForm, onDeleteItem }: Item
                                     id={ItemTableFormName.Url}
                                     value={value.url}
                                     onBlur={(event) => onBlurInputForm(event, index)}
+                                    onKeyUp={(event) => onKeyupInputForm(event, index)}
                                 />
                             </label>
                         </td>

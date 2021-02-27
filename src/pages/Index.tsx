@@ -19,6 +19,7 @@ type Props = {
     itemValueList: ItemValue[];
     onDeleteItem: (index: number) => void;
     onBlurInputForm: (event: Event, index: number) => void;
+    onKeyupInputForm: (event: KeyboardEvent, index: number) => void;
     onClickAddItem: () => void;
 };
 
@@ -27,6 +28,7 @@ export const IndexPage = ({
     itemValueList,
     onDeleteItem,
     onBlurInputForm,
+    onKeyupInputForm,
     onClickAddItem,
 }: Props): JSX.Element => {
     return (
@@ -40,6 +42,7 @@ export const IndexPage = ({
                     itemValueList={itemValueList}
                     onDeleteItem={onDeleteItem}
                     onBlurInputForm={onBlurInputForm}
+                    onKeyupInputForm={onKeyupInputForm}
                 />
             )}
             <button

@@ -60,6 +60,11 @@ export const Main = (): JSX.Element => {
     };
 
     const onBlurInputForm = (event: Event, index: number): void => setInputText(event, index);
+    const onKeyupInputForm = (event: KeyboardEvent, index: number): void => {
+        if (!event.isComposing) {
+            setInputText(event, index);
+        }
+    };
 
     useEffect(() => {
         itemValueListPort.onMessage.addListener((newList: ItemValue[]) => {
@@ -74,6 +79,7 @@ export const Main = (): JSX.Element => {
             onDeleteItem={onDeleteItem}
             onBlurInputForm={onBlurInputForm}
             onClickAddItem={onClickAddItem}
+            onKeyupInputForm={onKeyupInputForm}
         />
     );
 };
