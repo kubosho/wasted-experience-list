@@ -98,9 +98,9 @@ function spliceItemValueList(key: string, value: string, index: number, baseItem
 
 const rootElement = document.querySelector('#wasted-experience-list');
 if (rootElement !== null) {
-    const initialStatePort = connectPopupInitialValueConnectPort();
+    const popupInitialValuePort = connectPopupInitialValueConnectPort();
 
-    initialStatePort.onMessage.addListener((itemValueList) => {
+    popupInitialValuePort.onMessage.addListener((itemValueList) => {
         const initializeState = ({ set }: MutableSnapshot): void => {
             set(itemValueListState, itemValueList);
         };
@@ -112,6 +112,6 @@ if (rootElement !== null) {
             rootElement,
         );
 
-        initialStatePort.disconnect();
+        popupInitialValuePort.disconnect();
     });
 }
