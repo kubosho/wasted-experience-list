@@ -38,18 +38,6 @@ export const ItemTable = ({
                                 name={ItemTableFormName.Id}
                                 value={value.id}
                             />
-                            <label>
-                                Name:
-                                <input
-                                    ref={itemNameRef}
-                                    type="text"
-                                    name={ItemTableFormName.Name}
-                                    id={ItemTableFormName.Name}
-                                    value={value.name}
-                                    onBlur={(event) => onBlurInputForm(event, index)}
-                                    onKeyUp={(event) => onKeyupInputForm(event, index)}
-                                />
-                            </label>
                         </td>
                         <td>
                             <label>
@@ -58,6 +46,7 @@ export const ItemTable = ({
                                     type="url"
                                     name={ItemTableFormName.Url}
                                     id={ItemTableFormName.Url}
+                                    className="border"
                                     value={value.url}
                                     onBlur={(event) => onBlurInputForm(event, index)}
                                     onKeyUp={(event) => onKeyupInputForm(event, index)}

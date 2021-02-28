@@ -30,22 +30,8 @@ export const Main = (): JSX.Element => {
 
     const setInputText = (event: Event, index: number): void => {
         const target = event.target as HTMLInputElement;
-        switch (target.id) {
-            case ItemTableFormName.Name:
-                {
-                    const newList = spliceItemValueList(ItemTableFormName.Name, target.value, index, itemValueList);
-                    saveItemValueList(newList);
-                }
-                break;
-            case ItemTableFormName.Url:
-                {
-                    const newList = spliceItemValueList(ItemTableFormName.Url, target.value, index, itemValueList);
-                    saveItemValueList(newList);
-                }
-                break;
-            default:
-                break;
-        }
+        const newList = spliceItemValueList(ItemTableFormName.Url, target.value, index, itemValueList);
+        saveItemValueList(newList);
     };
 
     const onClickAddItem = (): void => {
