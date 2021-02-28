@@ -4,7 +4,6 @@ const path = require('path');
 const { EnvironmentPlugin } = require('webpack');
 const { BundleAnalyzerPlugin } = require('webpack-bundle-analyzer');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 const PUBLIC_DIR = 'public';
 const OUT_DIR = 'bundle';
@@ -21,10 +20,6 @@ module.exports = {
     target: 'web',
     module: {
         rules: [
-            {
-                test: /\.css$/,
-                use: [MiniCssExtractPlugin.loader, 'css-loader'],
-            },
             {
                 test: /\.js$/,
                 use: { loader: 'babel-loader' },
@@ -46,7 +41,6 @@ module.exports = {
                 },
             ],
         }),
-        new MiniCssExtractPlugin(),
     ],
     resolve: {
         alias: {
