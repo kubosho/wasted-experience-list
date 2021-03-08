@@ -24,6 +24,9 @@ export const ItemTableComponent = Template.bind(this, {
     onBlurInputForm: () => {
         return;
     },
+    onKeyupInputForm: () => {
+        return;
+    },
     onDeleteItem: () => {
         return;
     },
