@@ -27,7 +27,7 @@
         "@spectrum-css/typography": "^3.0.1",
         "@spectrum-css/vars": "^3.0.0",
         "dayjs": "^1.10.4",
-        "preact": "^10.5.12",
+        "preact": "^10.5.13",
         "recoil": "^0.1.2",
         "tailwindcss": "^2.0.4",
         "uuid": "^8.3.2"
