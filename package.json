@@ -22,7 +22,7 @@
     "dependencies": {
         "@spectrum-css/button": "^3.0.0",
         "@spectrum-css/icon": "^3.0.1",
-        "@spectrum-css/page": "^3.0.0",
+        "@spectrum-css/page": "^3.0.1",
         "@spectrum-css/table": "^3.0.0",
         "@spectrum-css/typography": "^3.0.1",
         "@spectrum-css/vars": "^3.0.0",
