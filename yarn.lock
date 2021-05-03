@@ -1672,10 +1672,10 @@
   resolved "https://registry.yarnpkg.com/@spectrum-css/table/-/table-3.0.0.tgz#37d0aa9236dda29825ef8f61786ba9ea0be1e563"
   integrity sha512-y0B88rXgnEc8qNuCtLB5cNZVV7vEe555ahML/BU/gbkukZeNv3TTGEycuG+TVRDGtUQeM0HyWShujrHysQb+zg==
 
-"@spectrum-css/typography@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@spectrum-css/typography/-/typography-3.0.1.tgz#957dafd9b18c314fa37a88b549042ba2175f5b3f"
-  integrity sha512-XyR68K2rIZX3u4j7HhMLOqLVHDJZcapp3XUqgYMzMWccBFleA0qPxKpfRWqVIA5DzTMSIw0wEcZPYKWFZ2e6dA==
+"@spectrum-css/typography@^3.0.2":
+  version "3.0.2"
+  resolved "https://registry.yarnpkg.com/@spectrum-css/typography/-/typography-3.0.2.tgz#ea3ca0a60e18064527819d48c8c4364cab4fcd38"
+  integrity sha512-5ZOLmQe0edzsDMyhghUd4hBb5uxGsFrxzf+WasfcUw9klSfTsRZ09n1BsaaWbgrLjlMQ+EEHS46v5VNo0Ms2CA==
 
 "@spectrum-css/vars@^3.0.0", "@spectrum-css/vars@^3.0.1":
   version "3.0.1"
