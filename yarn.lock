@@ -1667,10 +1667,10 @@
   dependencies:
     "@spectrum-css/vars" "^3.0.1"
 
-"@spectrum-css/table@^3.0.0":
-  version "3.0.0"
-  resolved "https://registry.yarnpkg.com/@spectrum-css/table/-/table-3.0.0.tgz#37d0aa9236dda29825ef8f61786ba9ea0be1e563"
-  integrity sha512-y0B88rXgnEc8qNuCtLB5cNZVV7vEe555ahML/BU/gbkukZeNv3TTGEycuG+TVRDGtUQeM0HyWShujrHysQb+zg==
+"@spectrum-css/table@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@spectrum-css/table/-/table-3.0.3.tgz#7f7f19905ef3275cbf907ce3a5818e63c30b2caf"
+  integrity sha512-nxwzVjLPsXoY/v4sdxOVYLcC+cEbGgJyLcLclT5LT9MGSbngFeUMJzzVR4EvehzuN4dH7hrATG7Mbuq29Mf0Hg==
 
 "@spectrum-css/typography@^3.0.2":
   version "3.0.2"
