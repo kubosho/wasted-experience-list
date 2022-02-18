@@ -17,7 +17,7 @@
         "update_snapshot": "jest --updateSnapshot",
         "typecheck": "tsc --project .",
         "storybook": "start-storybook -p 9001",
-        "build-storybook": "build-storybook"
+        "build_storybook": "build-storybook"
     },
     "dependencies": {
         "@spectrum-css/button": "^3.0.1",
