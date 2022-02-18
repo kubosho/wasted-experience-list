@@ -1650,10 +1650,10 @@
   dependencies:
     "@sinonjs/commons" "^1.7.0"
 
-"@spectrum-css/button@^3.0.1":
-  version "3.0.1"
-  resolved "https://registry.yarnpkg.com/@spectrum-css/button/-/button-3.0.1.tgz#6db8c3e851baecd0f1c2d88fef37d49d01c6e643"
-  integrity sha512-YXrBtjIYisk4Vaxnp0RiE4gdElQX04P2mc4Pi2GlQ27dJKlHmufYcF+kAqGdtiyK5yjdN/vKRcC8y13aA4rusA==
+"@spectrum-css/button@^3.0.3":
+  version "3.0.3"
+  resolved "https://registry.yarnpkg.com/@spectrum-css/button/-/button-3.0.3.tgz#2df1efaab6c7e0b3b06cb4b59e1eae59c7f1fc84"
+  integrity sha512-6CnLPqqtaU/PcSSIGeGRi0iFIIxIUByYLKFO6zn5NEUc12KQ28dJ4PLwB6WBa0L8vRoAGlnWWH2ZZweTijbXgg==
 
 "@spectrum-css/icon@^3.0.3":
   version "3.0.3"
