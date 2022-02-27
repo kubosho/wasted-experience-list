@@ -3,7 +3,7 @@ import { useRef } from 'preact/hooks';
 
 const UNINITIALIZED = Symbol('useInstance_uninitialized');
 
-export const useInstance = <T extends unknown>(initialFunction: () => T): T => {
+export const useInstance = <T>(initialFunction: () => T): T => {
     const ref = useRef<T | typeof UNINITIALIZED>(UNINITIALIZED);
 
     if (ref.current === UNINITIALIZED) {
