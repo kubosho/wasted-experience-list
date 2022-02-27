@@ -1601,12 +1601,12 @@
   resolved "https://registry.yarnpkg.com/@spectrum-css/icon/-/icon-3.0.14.tgz#0c92cad970ae505f39caaedd6e584c57715df07c"
   integrity sha512-iIlwmCaa8yWzgRxhAm+E1tiGFftOu7u4+ElDYhIWAtJXI7Mk2SLKNC9j/1/IM9tnC0zqAmvzWxxhWtjcgQh/cw==
 
-"@spectrum-css/page@^3.0.1":
-  version "3.0.9"
-  resolved "https://registry.yarnpkg.com/@spectrum-css/page/-/page-3.0.9.tgz#f8a705dee90af958e2ee20307218e4f82a018c36"
-  integrity sha512-zxbzJHDHgbc6fq6DpgWPtQa73kCl/3bukMOV2l784jyEWfXx62nuhFYxFVUq8olvyHw2MNZEXF//P7y+W5axVw==
+"@spectrum-css/page@^5.0.3":
+  version "5.0.3"
+  resolved "https://registry.yarnpkg.com/@spectrum-css/page/-/page-5.0.3.tgz#bce8a87b543ade7bcd2e792c02c81783e7d2e59a"
+  integrity sha512-EUusgc7w/sjKwaOKAXBNT598P1/i3S8Sd44fLSxJ83Sc3bj4sRC4a4JN/MDx6zz5co1+ydRHV4hhMfd3abyAqg==
   dependencies:
-    "@spectrum-css/vars" "^4.3.1"
+    "@spectrum-css/vars" "^7.0.0"
 
 "@spectrum-css/table@^3.0.3":
   version "3.0.3"
@@ -1623,10 +1623,10 @@
   resolved "https://registry.yarnpkg.com/@spectrum-css/vars/-/vars-3.0.2.tgz#ea9062c3c98dfc6ba59e5df14a03025ad8969999"
   integrity sha512-vzS9KqYXot4J3AEER/u618MXWAS+IoMvYMNrOoscKiLLKYQWenaueakUWulFonToPd/9vIpqtdbwxznqrK5qDw==
 
-"@spectrum-css/vars@^4.3.1":
-  version "4.3.1"
-  resolved "https://registry.yarnpkg.com/@spectrum-css/vars/-/vars-4.3.1.tgz#d333fa41909f691c8750b5c15ad9ba029df2248e"
-  integrity sha512-rX6Iasu9BsFMVgEN0vGRPm9dmSxva+IK/uqQAa9HM0lliwqUiFrJxrFXHHpiAgNuux/U4srEJwbSpGzfF+CegQ==
+"@spectrum-css/vars@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@spectrum-css/vars/-/vars-7.0.0.tgz#61a10028f3eeb69d8e488cfeb6251ec75107076d"
+  integrity sha512-0c7i7B/OPrLjrSIQVAxhnDDmDs9tA46gMuuiiaqpRNqEjfS1pRv5eY06qxNMXO5TWL75bHxaiiTQy8NdGA/v6A==
 
 "@storybook/addon-actions@6.4.19", "@storybook/addon-actions@^6.4.19":
   version "6.4.19"
