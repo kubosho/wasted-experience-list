@@ -1,6 +1,6 @@
 import { h, render } from 'preact';
 import { useEffect } from 'preact/hooks';
-import { MutableSnapshot, RecoilRoot, useRecoilState, useRecoilValue } from 'recoil';
+import Recoil, { RecoilRoot, useRecoilState, useRecoilValue } from 'recoil';
 import { v4 as uuid } from 'uuid';
 
 import { calculatedTotalTimeState } from './time/state/calculatedTotalTimeState';
@@ -87,7 +87,7 @@ if (rootElement !== null) {
     const popupInitialValuePort = connectPopupInitialValueConnectPort();
 
     popupInitialValuePort.onMessage.addListener((itemValueList) => {
-        const initializeState = ({ set }: MutableSnapshot): void => {
+        const initializeState = ({ set }: Recoil.MutableSnapshot): void => {
             set(itemValueListState, itemValueList);
         };
 
