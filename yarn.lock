@@ -1626,10 +1626,10 @@
   resolved "https://registry.yarnpkg.com/@spectrum-css/button/-/button-3.0.3.tgz#2df1efaab6c7e0b3b06cb4b59e1eae59c7f1fc84"
   integrity sha512-6CnLPqqtaU/PcSSIGeGRi0iFIIxIUByYLKFO6zn5NEUc12KQ28dJ4PLwB6WBa0L8vRoAGlnWWH2ZZweTijbXgg==
 
-"@spectrum-css/icon@^3.0.3":
-  version "3.0.14"
-  resolved "https://registry.yarnpkg.com/@spectrum-css/icon/-/icon-3.0.14.tgz#0c92cad970ae505f39caaedd6e584c57715df07c"
-  integrity sha512-iIlwmCaa8yWzgRxhAm+E1tiGFftOu7u4+ElDYhIWAtJXI7Mk2SLKNC9j/1/IM9tnC0zqAmvzWxxhWtjcgQh/cw==
+"@spectrum-css/icon@^3.0.19":
+  version "3.0.19"
+  resolved "https://registry.yarnpkg.com/@spectrum-css/icon/-/icon-3.0.19.tgz#d5b6f115dca41acc0fb9b93aa5fb8453d4f116e2"
+  integrity sha512-2CJgTKujfXLrxsF9OJtJkZVm2WR6kE3bztWuQSsUbBkS2nHIWlRWpfi8C6IUFO3JGe6J/JPMQFWKH0XeSypknw==
 
 "@spectrum-css/page@^5.0.3":
   version "5.0.3"
