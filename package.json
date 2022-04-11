@@ -21,7 +21,7 @@
     },
     "dependencies": {
         "@spectrum-css/button": "^3.0.3",
-        "@spectrum-css/icon": "^3.0.3",
+        "@spectrum-css/icon": "^3.0.20",
         "@spectrum-css/page": "^5.0.3",
         "@spectrum-css/table": "^3.0.3",
         "@spectrum-css/typography": "^3.0.2",
